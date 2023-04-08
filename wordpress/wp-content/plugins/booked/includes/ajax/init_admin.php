@@ -385,7 +385,7 @@ if(!class_exists('Booked_Admin_AJAX')) {
 				$interval = esc_html( $_POST['interval'] );
 				$count = esc_html( $_POST['count'] );
 				$time_between = esc_html( $_POST['time_between'] );
-
+				
 				if ($calendar_id):
 					$booked_defaults = get_option('booked_defaults_'.$calendar_id);
 				else :
@@ -499,11 +499,13 @@ if(!class_exists('Booked_Admin_AJAX')) {
 				if (empty($booked_defaults)): $booked_defaults = array(); endif;
 
 				if (!empty($booked_defaults[$day][$startTime.'-'.$endTime])): $currentCount = $booked_defaults[$day][$startTime.'-'.$endTime]; else : $currentCount = 0; endif;
+
+				//Creating new timesloott
 				$booked_defaults[$day][$startTime.'-'.$endTime] = $count + $currentCount;
 				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['title'] = $title;
-				$booked_defaults['product']['name'] = $productName;
-				$booked_defaults['product']['Id'] = $productId;
-
+				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['product']['name'] = $productName;
+				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['product']['Id'] = $productId;
+				
 				do_action('booked_creating_timeslot',$day,$startTime,$endTime,$calendar_id, $productId, $productName );
 
 				if ($calendar_id):

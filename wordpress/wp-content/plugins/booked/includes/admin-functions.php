@@ -270,10 +270,11 @@ function booked_render_timeslots($calendar_id = false){
 
 }
 
-function booked_render_timeslot_info($time_format,$day,$time,$count,$calendar_id,$booked_defaults=array(), $productId = "", $productName = ""){
+function booked_render_timeslot_info($time_format,$day,$time,$count,$calendar_id,$booked_defaults=array()){
 
 	$title = isset($booked_defaults[$day.'-details'][$time]['title']) ? $booked_defaults[$day.'-details'][$time]['title'] : '';
-
+	$productName = $booked_defaults[$day.'-details'][$time]['product']['name'];
+	$productId = $booked_defaults[$day.'-details'][$time]['product']['Id'];
 	ob_start();
 
 	echo '<span class="timeslot" data-timeslot="'.$time.'">';

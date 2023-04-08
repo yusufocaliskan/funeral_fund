@@ -1,0 +1,37 @@
+services:
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./wordpress:/var/www/html:delegated
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: booked
+      MYSQL_USER: booked
+      MYSQL_PASSWORD: Ma5ik33ysi45+!
+      MYSQL_ROOT_PASSWORD: Ma5ik33ysi45+!
+
+    volumes:
+      - ./mysql:/var/lib/mysql
+  php:
+    image: php:7.4-fpm-alpine
+    build:
+      context: .
+      dockerfile: ./php/Dockerfile
+    volumes:
+      - ./wordpress:/var/www/html
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: booked-mysql-1
+      PMA_PASSWORD: Ma5ik33ysi45+!
+      PMA_USER: "root"
+    restart: always
+

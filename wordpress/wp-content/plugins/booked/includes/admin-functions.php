@@ -167,7 +167,8 @@ function booked_render_time_select($select_name,$interval,$placeholder,$single =
 	return apply_filters( 'booked_time_select_field', $html );
 }
 
-function booked_render_product_select($select_name,$interval,$placeholder,$single = false){
+//times slots is listed.
+function booked_render_product_select($select_name,$interval,$placeholder){
 
 	global $wpdb;
 	$time = 0;
@@ -175,17 +176,13 @@ function booked_render_product_select($select_name,$interval,$placeholder,$singl
 	$time_format = get_option('time_format');
 	$balindex = new Balindex();
 	$products = $balindex->getAllProducts(); 
-	// echo "<pre>";
-	// print_r($products);
-	// echo "</pre>";
+	  
+
 	$html = '<select name="'.$select_name.'">';
 	$html .= '<option value="">'.$placeholder.'</option>';
-		if ($single): $html .= '<option value="allday">'.esc_html__('All Day','booked').'</option>'; endif;
 		for($i = 0; $i <= count($products); $i++){
-			$html .= '<option value="'.$products[$i]->ID.'">'.$products[$i]->post_title.'</option>';
+			$html .= '<option  data-product-price="'.$products[$i]->min_price.'" data-product-name="'.$products[$i]->post_title.'" value="'.$products[$i]->ID.'">'.$products[$i]->post_title.' - '.$products[$i]->min_price.'</option>';
 		}
-		
-		$html .= '<option value="2400">'.date_i18n($time_format,strtotime('2014-01-01 24:00')).' ('.esc_html__('night','booked').')</option>';
 	$html .= '</select>';
 
 	return apply_filters( 'booked_time_select_field', $html );
@@ -273,8 +270,12 @@ function booked_render_timeslots($calendar_id = false){
 function booked_render_timeslot_info($time_format,$day,$time,$count,$calendar_id,$booked_defaults=array()){
 
 	$title = isset($booked_defaults[$day.'-details'][$time]['title']) ? $booked_defaults[$day.'-details'][$time]['title'] : '';
+
+	//Get Product details. 
 	$productName = $booked_defaults[$day.'-details'][$time]['product']['name'];
 	$productId = $booked_defaults[$day.'-details'][$time]['product']['Id'];
+	$productPrice = $booked_defaults[$day.'-details'][$time]['product']['price'];
+
 	ob_start();
 
 	echo '<span class="timeslot" data-timeslot="'.$time.'">';
@@ -297,7 +298,7 @@ function booked_render_timeslot_info($time_format,$day,$time,$count,$calendar_id
 		if ( $title ) {
 			echo '<span class="booked_slot_title">'.esc_html($title).'</span>';
 		}
-		echo '<span class="product_name" data-productId="'.$productId.'">Product: '.esc_html($productName).'</span>';
+		echo '<span class="product_name" data-productId="'.$productId.'">Product: '.esc_html($productName).' # '.$productPrice.' </span>';
 		echo '<span class="delete"><i class="fa-solid fa-xmark"></i></span>';
 
 		do_action( 'booked_single_timeslot_end', $day, $time, $calendar_id );

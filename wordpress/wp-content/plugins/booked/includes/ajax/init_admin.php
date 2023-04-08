@@ -485,6 +485,7 @@ if(!class_exists('Booked_Admin_AJAX')) {
 				$count = $_POST['count'];
 				$productId = $_POST['productId'];
 				$productName = $_POST['productName'];
+				$productPrice = $_POST['productPrice'];
 				if ($startTime == 'allday'):
 					$startTime = '0000';
 					$endTime = '2400';
@@ -505,8 +506,9 @@ if(!class_exists('Booked_Admin_AJAX')) {
 				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['title'] = $title;
 				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['product']['name'] = $productName;
 				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['product']['Id'] = $productId;
+				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['product']['price'] = $productPrice;
 				
-				do_action('booked_creating_timeslot',$day,$startTime,$endTime,$calendar_id, $productId, $productName );
+				do_action('booked_creating_timeslot',$day,$startTime,$endTime,$calendar_id, $productId, $productName, $productPrice );
 
 				if ($calendar_id):
 					update_option('booked_defaults_'.$calendar_id,apply_filters('booked_update_timeslots',$booked_defaults));
@@ -972,12 +974,13 @@ if(!class_exists('Booked_Admin_AJAX')) {
 				$time_format = get_option('time_format');
 				$productId = $_POST['productId'];
 				$productName = $_POST['productName'];
+				$productPrice = $_POST['productPrice'];
 				
 				if (!empty($booked_defaults[$day])):
 					ksort($booked_defaults[$day]);
 					foreach($booked_defaults[$day] as $time => $count):
 						
-						echo booked_render_timeslot_info($time_format,$day,$time,$count,$calendar_id, $booked_defaults, $productId, $productName);
+						echo booked_render_timeslot_info($time_format,$day,$time,$count,$calendar_id, $booked_defaults, $productId, $productName, $productPrice);
 					endforeach;
 				else :
 					echo '<p><small>'.esc_html__('No time slots.','booked').'</small></p>';

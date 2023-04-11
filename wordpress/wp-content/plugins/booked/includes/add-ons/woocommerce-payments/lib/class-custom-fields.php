@@ -63,9 +63,13 @@ class Booked_WC_Custom_Fields {
 		Booked_WC_Fragments::load('booked-administration-fields/templates');
 	}
 
+	
+	/**
+	 * NISE#1. Product Selector select template.
+	 */
 	public function booked_custom_fields_add_template_subs($field_type='', $name='', $value='', $look_for_subs='') {
 		$reset_subs = true;
-
+	
 		if ( $field_type==='single-paid-service' ) {
 			$reset_subs = false;
 			$template_path = Booked_WC_Fragments::get_path('booked-administration-fields/templates-subs');

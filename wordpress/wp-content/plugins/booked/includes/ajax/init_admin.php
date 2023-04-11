@@ -343,10 +343,11 @@ if(!class_exists('Booked_Admin_AJAX')) {
 			Booked_Admin_AJAX::nonce_check('ajax-admin-nonce');
 
 			booked_wpml_ajax();
-
+			
 			if (isset($_POST['booked_custom_fields'])):
 
 				$custom_fields = $_POST['booked_custom_fields'];
+				
 				$calendar_id = $_POST['booked_cf_calendar_id'];
 				if ($custom_fields != '[]'):
 					if ($calendar_id):
@@ -506,7 +507,7 @@ if(!class_exists('Booked_Admin_AJAX')) {
 				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['title'] = $title;
 				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['product']['name'] = $productName;
 				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['product']['Id'] = $productId;
-				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['product']['price'] = $productPrice;
+				$booked_defaults['productIds'][] = $productId;
 				
 				do_action('booked_creating_timeslot',$day,$startTime,$endTime,$calendar_id, $productId, $productName, $productPrice );
 
@@ -953,7 +954,6 @@ if(!class_exists('Booked_Admin_AJAX')) {
 		}
 
 		// Timeslots
-		//TODO#1: not...
 		public function booked_admin_load_timeslots(){
 			
 			Booked_Admin_AJAX::nonce_check('ajax-admin-nonce');
@@ -1066,6 +1066,7 @@ if(!class_exists('Booked_Admin_AJAX')) {
 		}
 
 		// Full Custom Fields
+		//NISE#3 - Level -3
 		public function booked_admin_load_full_customfields(){
 			
 			Booked_Admin_AJAX::nonce_check('ajax-admin-nonce');

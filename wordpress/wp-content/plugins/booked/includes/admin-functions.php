@@ -298,7 +298,7 @@ function booked_render_timeslot_info($time_format,$day,$time,$count,$calendar_id
 		if ( $title ) {
 			echo '<span class="booked_slot_title">'.esc_html($title).'</span>';
 		}
-		echo '<span class="product_name" data-productId="'.$productId.'">Product: '.esc_html($productName).' # '.$productPrice.' </span>';
+		echo '<span class="product_name" data-productId="'.$productId.'">Product: '.esc_html($productName).' <br> Price:  '.$productPrice.' </span>';
 		echo '<span class="delete"><i class="fa-solid fa-xmark"></i></span>';
 
 		do_action( 'booked_single_timeslot_end', $day, $time, $calendar_id );
@@ -1130,9 +1130,13 @@ function booked_admin_calendar_date_square($date,$calendar_id = false){
 
 }
 
+/**
+ * NISE#2: one level up
+ */
 function booked_render_custom_fields($calendar = false){
-
+	
 	?><form id="booked-cf-sortables-form">
+		
 		<ul id="booked-cf-sortables"><?php
 
 			if (!$calendar):
@@ -1156,12 +1160,22 @@ function booked_render_custom_fields($calendar = false){
 				
 				endforeach;
 				
+				$single_paid_services = [];
 				foreach($custom_fields as $field):
 
 					if ($look_for_subs):
 
 						$field_type = explode('---',$field['name']);
 						$field_type = $field_type[0];
+						if($field_type == 'single-paid-service')
+						{
+							$single_paid_services[]=[
+								$field_type,
+								$field['name'],
+								$field['value'],
+								$look_for_subs
+							];
+						}
 
 						if ($field_type == 'single-checkbox'):
 
@@ -1211,8 +1225,10 @@ function booked_render_custom_fields($calendar = false){
 								<span class="cf-delete"><i class="fa-solid fa-trash-can"></i></span>
 							</li><?php
 
+							
 							endif;
-
+						
+							
 							$reset_subs = apply_filters(
 								'booked_custom_fields_add_template_subs',
 								$field_type,
@@ -1220,6 +1236,7 @@ function booked_render_custom_fields($calendar = false){
 								$field['value'],
 								$look_for_subs
 							);
+							
 
 							if ( $reset_subs ) {
 								$look_for_subs = false;
@@ -1242,10 +1259,43 @@ function booked_render_custom_fields($calendar = false){
 							?><li class="ui-state-default"><i class="main-handle fa-solid fa-bars"></i>
 								<small><?php esc_html_e('Single Line Text','booked'); ?></small>
 								<p><input class="cf-required-checkbox"<?php if ($is_required): echo ' checked="checked"'; endif; ?> type="checkbox" name="required---<?php echo $numbers_only; ?>" id="required---<?php echo $numbers_only; ?>"> <label for="required---<?php echo $numbers_only; ?>"><?php esc_html_e('Required Field','booked'); ?></label></p>
-								<input type="text" name="<?php echo $field['name']; ?>" value="<?php echo htmlentities($field['value'], ENT_QUOTES | ENT_IGNORE, "UTF-8"); ?>" placeholder="<?php esc_html_e('Enter a label for this field...','booked'); ?>" />
+								<input type="text" name="<?php echo $name; ?>" value="<?php echo htmlentities($field['value'], ENT_QUOTES | ENT_IGNORE, "UTF-8"); ?>" placeholder="<?php esc_html_e('Enter a label for this field...','booked'); ?>" />
 								<span class="cf-delete"><i class="fa-solid fa-trash-can"></i></span>
 							</li><?php
 
+						break;
+
+						
+						case 'paid-service-label':
+							$balindex = new Balindex();
+							$products = $balindex->getTimeslotProducts();
+							?>
+								<li class="ui-state-default">
+									<i class="main-handle fa-solid fa-bars"></i>
+									<span class="cf-delete"><i class="fa-solid fa-trash-can"></i></span>
+									<small><?php _e('Product Selector', 'booked'); ?></small>
+									<p>
+										<input class="cf-required-checkbox"<?php if ($is_required): echo ' checked="checked"'; endif; ?> type="checkbox" name="required---<?php echo $numbers_only; ?>" id="required---<?php echo $numbers_only; ?>">
+										<label for="required---<?php echo $numbers_only; ?>"><?php _e('Required Field', 'booked'); ?></label>
+									</p>
+									<input type="text" name="<?php echo $field['name']; ?>" value="<?php echo htmlentities($field['value'], ENT_QUOTES | ENT_IGNORE, "UTF-8"); ?>" placeholder="<?php _e('Enter a label for this drop-down group...', 'booked'); ?>" />
+									<ul id="booked-cf-paid-service">
+										<li id="bookedCFTemplate-single-paid-service" class="ui-state-default">
+											<!-- <i class="sub-handle fa-solid fa-bars"></i> -->
+											<select name="<?php echo $name ?>" >
+												<!-- <option value=""><?php _e('Select a Product', 'booked'); ?></option> -->
+												<?php foreach ($products as $product): ?>
+													<?php $product = Booked_WC_Product::get( intval($product) ); ?>
+													
+													<option <?php echo intval($value)===$product->data->id ? 'selected="selected"' : '' ?> value="<?php echo $product->data->id ?>"><?php echo esc_html($product->title); ?></option>
+												<?php endforeach ?>
+											</select>
+											<!-- <span class="cf-delete"><i class="fa-solid fa-trash-can"></i></span> -->
+										</li>
+										</ul>
+										</li>
+
+							<?php
 						break;
 
 						case 'paragraph-text-label' :
@@ -1305,6 +1355,10 @@ function booked_render_custom_fields($calendar = false){
 							</li><?php
 
 						break;
+
+						
+
+						
 
 						default:
 							$look_for_subs_action = apply_filters(

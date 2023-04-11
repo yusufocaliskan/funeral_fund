@@ -1062,13 +1062,14 @@ var booked_load_calendar_date_booking_options;
 		});
 
 		$('body').on('click','.booked-cf-block .cfButton',function(e){
-
+			
 			e.preventDefault();
 			var CF_ButtonType = $(this).attr('data-type');
 			appendLocation = $(this).parent().find('ul:first');
-
+			
 			var newSortable = CF_SortablesTemplatesContainer.find('#bookedCFTemplate-'+CF_ButtonType).clone().appendTo(appendLocation);
 
+			
 			// Assign this field a random number
 			if (CF_ButtonType == 'plain-text-content'){
 				var thisInput = newSortable.find('textarea[name="'+CF_ButtonType+'"]');
@@ -1098,6 +1099,18 @@ var booked_load_calendar_date_booking_options;
 				thisRequiredCheckbox.attr('name','required---'+randomNumber).attr('id','required---'+randomNumber).parent().find('label').attr('for','required---'+randomNumber);
 			}
 
+			
+			if(CF_ButtonType == 'single-paid-service')
+			{
+				//Hides the button to not to allow duplication
+				$(this).hide()
+
+				//Append all the options to form as input
+				var options = CF_SortablesTemplatesContainer.find('#bookedCFTemplate-single-paid-service select option');
+				create_options(options,appendLocation)
+				
+			}
+
 			thisInput.attr('name',CF_ButtonType+'---'+randomNumber);
 			thisInput.css('border-color','#FFBA00');
 
@@ -1116,6 +1129,8 @@ var booked_load_calendar_date_booking_options;
 			init_booked_cf_sortables();
 
 		});
+
+		
 
 		$('body').on('change','.booked-cf-block .cf-required-checkbox',function(e){
 			var thisCheckboxVal = $(this).attr('checked');
@@ -1139,11 +1154,44 @@ var booked_load_calendar_date_booking_options;
 					$('#booked-cf-sortables').hide();
 				}
 				update_CF_Data(CF_SortablesForm);
+
+				//Remove PRODUCT SELECTOR options
+				remeve_options()
 			}
 		});
 
+		/**
+		 * Create some input
+		 * @param {object} options 
+		 * @param {object} location place where options will be append
+		 */
+		function create_options(options, location)
+		{
+			//PRODUCT SELECTOR
+			var randomNumber = Math.floor((Math.random() * 9999999) + 1000000);
+			options.each(function(i){
+				$('<input>',{
+					type:'hidden',
+					value:$(this).val(),
+					name:'single-paid-service---'+randomNumber,
+					class:"single-paid-service-options"
+				}).appendTo(location)
+			})
+		}
+
+		/**
+		 * removes input from DOm
+		 */
+		function remeve_options()
+		{
+
+			$(".single-paid-service-options").remove();
+			$('.cfButton[data-type="single-paid-service"]').show()
+		}
+
 		function update_CF_Data(CF_SortablesForm){
 			var sortableContent = JSON.stringify(CF_SortablesForm.serializeArray());
+			console.log(CF_SortablesForm.serializeArray())
 			$('#booked_custom_fields').val(sortableContent);
 		}
 
@@ -1201,7 +1249,7 @@ var booked_load_calendar_date_booking_options;
 			e.preventDefault();
 			var booked_custom_fields	= $('#booked_custom_fields').val(),
 				booked_cf_calendar_id	= $('#booked-cfSwitcher select').val();
-
+			
 			booked_js_vars.ajaxRequests.push = $.bookedAjaxQueue({
 				type	: 'post',
 				url 	: booked_js_vars.ajax_url,
@@ -1239,7 +1287,7 @@ var booked_load_calendar_date_booking_options;
 
 			var adminTabs 	= $('.booked-admin-tabs');
 			var tabHash 	= window.location.hash;
-
+			
 			if (tabHash){
 				var activeTab = tabHash;
 				activeTab = activeTab.split('#');
@@ -1256,6 +1304,7 @@ var booked_load_calendar_date_booking_options;
 
 			adminTabs.find('li > a').on('click', function(e) {
 
+				
 				//e.preventDefault();
 				$('.tab-content').hide();
 				adminTabs.find('li').removeClass('active');
@@ -1264,19 +1313,30 @@ var booked_load_calendar_date_booking_options;
 				var activeTab = $(this).attr('href');
 				activeTab = activeTab.split('#');
 				activeTab = activeTab[1];
-
+				
 				if (activeTab == 'import_export_uninstall'){
 					$('.submit-section').hide();
 				} else {
 					$('.submit-section').show();
 				}
 
-				$('#booked-'+activeTab).show();
+				//In order to get new products list that added to the timeslots
+				//we need to refresh the page. 
+				if(activeTab == 'custom-fields')
+				{
+					window.location.replace("/wp-admin/admin.php?page=booked-settings#custom-fields");
+					location.reload()
+				}
+				else{
+					$('#booked-'+activeTab).show();
+				}
+				
 
 			});
 
 		}
 
+		
 		/* Admin Sub-Tabs */
 		if ($('.booked-admin-subtabs').length){
 

@@ -112,7 +112,7 @@ endif;
 		<?php endif; ?>
 
 		<hr>
-
+ 
 		<?php booked_custom_fields($calendar_id); ?>
 
 		<input type="hidden" name="booked_form_type" value="admin" />

@@ -127,20 +127,22 @@
 			separator = '---';
 
 		$doc.on("booked-on-cbutton-click", function(event, params) {
+			
 			var $this = params.button_object,
 				$this_parent = $this.parents('li'),
 				button_type = params.button_type,
 				unique_number = params.random_number; // $this_parent.length ? $this_parent.find('input[type=text]:first').attr('name').split(separator)[1] : '';
 
 			if ( button_type === 'single-paid-service' ) {
-
+				
 				var $options_list = $this.parent().find('#booked-cf-paid-service');
+				
 
 				$( '> li', $options_list).each(function() {
 					var $this_li = $(this),
 						$option_field = $this_li.find('select'),
 						this_name = $option_field.attr('name');
-
+					
 					if ( !booked_wc_strpos(this_name, separator) ) {
 						var field_name = this_name + separator + unique_number;
 

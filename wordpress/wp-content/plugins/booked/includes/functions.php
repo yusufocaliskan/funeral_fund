@@ -1477,11 +1477,12 @@ function booked_custom_fields($calendar_id = false){
 
 	if ($calendar_id):
 		$custom_fields = json_decode(stripslashes(get_option('booked_custom_fields_'.$calendar_id)),true);
+		
 		if (empty($custom_fields)): $custom_fields = json_decode(stripslashes(get_option('booked_custom_fields')),true); endif;
 	else:
 		$custom_fields = json_decode(stripslashes(get_option('booked_custom_fields')),true);
 	endif;
-
+	
 	if (!empty($custom_fields)):
 
 		echo '<div class="cf-block">';
@@ -1501,12 +1502,13 @@ function booked_custom_fields($calendar_id = false){
 			endif;
 		
 		endforeach;
-
+		
 		foreach($custom_fields as $field):
 
 			$temp_count++;
 
 			$field_parts = explode('---',$field['name']);
+			
 			$field_type = $field_parts[0];
 			$end_of_string = explode('___',$field_parts[1]);
 			$numbers_only = $end_of_string[0];

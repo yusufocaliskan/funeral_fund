@@ -740,12 +740,15 @@ function booked_get_admin_appointments($date,$time_format,$date_format,$calendar
 
 function booked_admin_calendar_date_loop($date,$time_format,$date_format,$calendar_id = false,$tab_title,$tabbed = false,$calendars = false){
 
+	
 	$year = date_i18n('Y',strtotime($date));
 	$month = date_i18n('m',strtotime($date));
 	$day = date_i18n('d',strtotime($date));
+	
 
 	$date_display = date_i18n($date_format,strtotime($date));
 	$day_name = date('D',strtotime($date));
+	
 
 	$appointments_array = booked_get_admin_appointments($date,$time_format,$date_format,$calendar_id,$tabbed,$calendars);
 
@@ -823,10 +826,20 @@ function booked_admin_calendar_date_loop($date,$time_format,$date_format,$calend
 			Display the timeslot
 			*/
 
+
 			$timeslot_parts = explode('-',$timeslot);
 
 			$current_timestamp = current_time('timestamp');
 			$this_timeslot_timestamp = strtotime($year.'-'.$month.'-'.$day.' '.$timeslot_parts[0]);
+			
+			//Get the available product
+			$balindex = new Balindex();
+			$product = $balindex->getProductByTimeSlot($date); 
+			$product = $product[$timeslot];
+			unset($product['title']);
+			
+			
+			
 
 			if ($current_timestamp < $this_timeslot_timestamp){
 				$available = true;
@@ -852,12 +865,15 @@ function booked_admin_calendar_date_loop($date,$time_format,$date_format,$calend
 				if ( $title ) {
 					echo '<span class="timeslot-title">' . esc_html($title) . '</span><br>';
 				}
+				
 				echo '<i class="fa-solid fa-clock"></i>&nbsp;&nbsp;'.$timeslotText.'</span>';
 				echo '<span class="timeslot-count">';
 
 					do_action('booked_single_timeslot_in_list_start', $this_timeslot_timestamp, $timeslot, $calendar_id);
 
-					echo '<span class="spots-available'.($spots_available == 0 ? ' empty' : '').'">'.$spots_available.' '._n('space','spaces',$spots_available,'booked').' '.esc_html__('available','booked').'</span>';
+					echo '<span class="spots-available'.($spots_available == 0 ? ' empty' : '').'">'.$spots_available.' '._n('space','spaces',$spots_available,'booked').' '.esc_html__('available','booked').'<br>
+					'.$product['product']['name'].'
+					</span>';
 
 					/*
 					Display the appointments set in this timeslot

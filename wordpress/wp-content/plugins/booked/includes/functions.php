@@ -1585,24 +1585,24 @@ function booked_custom_fields($calendar_id = false){
 				break;
 
 				case 'paid-service-label' :
-					echo $_POST['timeslot']."<br>";
-					echo $_POST['title']."<br>";
-					echo $_POST['date']."<br>";
-					echo  get_option('date_format');
 					$balindex = new Balindex();
-					$products = $balindex->getAllProducts(); 
-					
+					$products = $balindex->getProductByTimeSlot($_POST['date']); 
+					$products = $products[$_POST['timeslot']];
+					unset($products['title']);
 					?>
+					
 					
 					<div class="field field-paid-service">
 					<label class="field-label"><?php echo htmlentities($field['value'], ENT_QUOTES | ENT_IGNORE, "UTF-8"); ?><?php if ($is_required): ?><i class="required-asterisk fa-solid fa-asterisk"></i><?php endif; ?></label>
 					<input type="hidden" name="booked_wc_product[<?php echo $field['name']; ?>]" value="1" />
 					<input type="hidden" name="<?php echo $field['name']; ?>" />
-						<select name="product" >
-							<?php foreach ($products as $product): ?>
-								<option data-product-price="<?php echo $product->min_price; ?>" value="<?php echo $product->ID ?>"><?php echo esc_html($product->post_title); ?></option>
-							<?php endforeach; ?>
-						</select>
+					<select name="product" >
+						<?php foreach ($products as $product): ?>
+							<option data-product-price="<?php echo $product->min_price; ?>" value="<?php echo $product['Id'] ?>">
+								<?php echo esc_html($product['name']); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
 						<div class="paid-variations"></div>
 					</div>
 					<?php

@@ -11,6 +11,9 @@ class Balindex{
      */
     public $DB;
 
+    /**
+     * Shorted days of weeek
+     */
     public function __construct()
     {
         global $wpdb;
@@ -48,15 +51,22 @@ class Balindex{
         
     }
 
-    public function getProductByTimeSlot($timeslot)
+    public function getProductByTimeSlot($day = '')
     {
         $booked_default = get_option( 'booked_defaults' );
         
         //Removes the same values
         if(count($booked_default['productIds']) > 0)
         {
-            return array_unique($booked_default['productIds']);
+            
+            return $booked_default[$this->shortDaynName($day).'-details'];
         }
+        
+    }
+
+    public function shortDaynName($day)
+    {
+        return date('D', strtotime($day));
     }
     
 

@@ -1526,7 +1526,7 @@ var booked_load_calendar_date_booking_options;
 						productId		= $('.tsSingle').find('select[name=product] :selected').val(),
 						productName		= $('.tsSingle').find('select[name=product] :selected').attr('data-product-name'),
 						productPrice		= $('.tsSingle').find('select[name=product] :selected').attr('data-product-price'),
-					
+						
 						count 			= $('.tsSingle').find('select[name=count] :selected').val(),
 						calendar_id		= $('table.booked-timeslots').attr('data-calendar-id'),
 						countText		= $('.tsSingle').find('select[name=count] :selected').text();

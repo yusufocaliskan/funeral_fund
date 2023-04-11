@@ -910,7 +910,11 @@ function booked_fe_calendar_date_content($date,$calendar_id = false){
 								$html .= apply_filters('booked_fe_calendar_timeslot_after','',$this_timeslot_timestamp,$timeslot,$calendar_id);
 
 							$html .= '</span>';
-							$html .= '<span class="timeslot-people"><button data-calendar-id="'.$calendar_id.'" data-title="'.esc_attr($title).'" data-timeslot="'.$timeslot.'" data-date="'.$date.'" class="new-appt button"'.(!$spots_available || !$available ? ' disabled' : '').'>'.( $title ? '<span class="timeslot-mobile-title">'.esc_html($title).'</span>' : '' ).'<span class="button-timeslot">'.apply_filters('booked_fe_mobile_timeslot_button',$timeslotText,$this_timeslot_timestamp,$timeslot,$calendar_id).'</span>'.apply_filters('booked_button_book_appointment', '<span class="button-text">' . $button_text . '</span>' . ( !$hide_available_count ? '<span class="spots-available' . ( $spots_available == 0 ? ' empty' : '' ) . '">' . sprintf( esc_html( _n( '%d space available', '%d spaces available', $spots_available, 'booked' ) ), $spots_available ) . '</span>' : '' ) ).'</button></span>';
+							$html .= '<span class="timeslot-people">
+									<button data-calendar-id="'.$calendar_id.'" data-title="'.esc_attr($title).'" data-timeslot="'.$timeslot.'" data-date="'.$date.'" style="margin-top: 10px" class="new-appt  button"'.(!$spots_available || !$available ? ' disabled' : '').'>
+									'.( $title ? '' : '' ).'
+										<span   class="button-timeslot">'.apply_filters('booked_fe_mobile_timeslot_button',$timeslotText,$this_timeslot_timestamp,$timeslot,$calendar_id).'</span>'.apply_filters('booked_button_book_appointment', '<span class="button-text">' . $button_text . '</span>'
+										 . ( !$hide_available_count ? '<span style="color: white" class="spots-available' . ( $spots_available == 0 ? ' empty' : '' ) . '">' . sprintf( esc_html( _n( '%d space available', '%d spaces available', $spots_available, 'booked' ) ), $spots_available ) . '</span>' : '' ) ).'</button></span>';
 						$html .= '</div>';
 					endif;
 
@@ -1585,20 +1589,25 @@ function booked_custom_fields($calendar_id = false){
 				break;
 
 				case 'paid-service-label' :
+					
 					$balindex = new Balindex();
 					$products = $balindex->getProductByTimeSlot($_POST['date']); 
+					
 					$products = $products[$_POST['timeslot']];
-					unset($products['title']);
+					//unset($products['title']);
+					
 					?>
 					
 					
 					<div class="field field-paid-service">
 					<label class="field-label"><?php echo htmlentities($field['value'], ENT_QUOTES | ENT_IGNORE, "UTF-8"); ?><?php if ($is_required): ?><i class="required-asterisk fa-solid fa-asterisk"></i><?php endif; ?></label>
-					<input type="hidden" name="booked_wc_product[<?php echo $field['name']; ?>]" value="1" />
+					<input type="hidden" name="  booked_wc_product[<?php echo $field['name']; ?>]" value="1" />
 					<input type="hidden" name="<?php echo $field['name']; ?>" />
+					
 					<select name="product" >
+						
 						<?php foreach ($products as $product): ?>
-							<option data-product-price="<?php echo $product->min_price; ?>" value="<?php echo $product['Id'] ?>">
+							<option data-product-price="<?php echo $product['price']; ?>" value="<?php echo $product['Id'] ?>">
 								<?php echo esc_html($product['name']); ?>
 							</option>
 						<?php endforeach; ?>

@@ -58,7 +58,6 @@ class Balindex{
         //Removes the same values
         if(count($booked_default['productIds']) > 0)
         {
-            
             return $booked_default[$this->shortDaynName($day).'-details'];
         }
         

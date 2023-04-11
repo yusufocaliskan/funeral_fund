@@ -507,6 +507,7 @@ if(!class_exists('Booked_Admin_AJAX')) {
 				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['title'] = $title;
 				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['product']['name'] = $productName;
 				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['product']['Id'] = $productId;
+				$booked_defaults[$day.'-details'][$startTime.'-'.$endTime]['product']['price'] = $productPrice;
 				$booked_defaults['productIds'][] = $productId;
 				
 				do_action('booked_creating_timeslot',$day,$startTime,$endTime,$calendar_id, $productId, $productName, $productPrice );

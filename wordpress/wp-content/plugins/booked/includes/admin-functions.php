@@ -872,7 +872,7 @@ function booked_admin_calendar_date_loop($date,$time_format,$date_format,$calend
 					do_action('booked_single_timeslot_in_list_start', $this_timeslot_timestamp, $timeslot, $calendar_id);
 
 					echo '<span class="spots-available'.($spots_available == 0 ? ' empty' : '').'">'.$spots_available.' '._n('space','spaces',$spots_available,'booked').' '.esc_html__('available','booked').'<br>
-					'.$product['product']['name'].'
+					'.$product['product']['name'] .'- $'.$product['product']['price'].'
 					</span>';
 
 					/*

@@ -1562,15 +1562,16 @@ function booked_custom_fields($calendar_id = false){
 				endif;
 
 			endif;
-
+			
 			switch($field_type):
-
+				
 				case 'single-line-text-label' :
 
 					?><div class="field">
 						<label class="field-label"><?php echo $field['value']; ?><?php if ($is_required): ?><i class="required-asterisk fa-solid fa-asterisk"></i><?php endif; ?></label>
 						<input id="booked-textfield-<?php echo esc_attr($field['name']); ?>" <?php echo $data_attributes ?> <?php if ($is_required): echo ' required="required"'; endif; ?> type="text" name="<?php echo esc_attr($field['name']); ?>" value="" class="large textfield" />
-					</div><?php
+					</div>
+					<?php
 
 				break;
 
@@ -1582,6 +1583,30 @@ function booked_custom_fields($calendar_id = false){
 					</div><?php
 
 				break;
+
+				case 'paid-service-label' :
+					echo $_POST['timeslot']."<br>";
+					echo $_POST['title']."<br>";
+					echo $_POST['date']."<br>";
+					echo  get_option('date_format');
+					$balindex = new Balindex();
+					$products = $balindex->getAllProducts(); 
+					
+					?>
+					
+					<div class="field field-paid-service">
+					<label class="field-label"><?php echo htmlentities($field['value'], ENT_QUOTES | ENT_IGNORE, "UTF-8"); ?><?php if ($is_required): ?><i class="required-asterisk fa-solid fa-asterisk"></i><?php endif; ?></label>
+					<input type="hidden" name="booked_wc_product[<?php echo $field['name']; ?>]" value="1" />
+					<input type="hidden" name="<?php echo $field['name']; ?>" />
+						<select name="product" >
+							<?php foreach ($products as $product): ?>
+								<option data-product-price="<?php echo $product->min_price; ?>" value="<?php echo $product->ID ?>"><?php echo esc_html($product->post_title); ?></option>
+							<?php endforeach; ?>
+						</select>
+						<div class="paid-variations"></div>
+					</div>
+					<?php
+					break;
 
 				case 'checkboxes-label' :
 
@@ -1620,6 +1645,7 @@ function booked_custom_fields($calendar_id = false){
 				break;
 
 				default:
+				
 					$look_for_subs_action = apply_filters(
 						'booked_custom_fields_add_template_main',
 						false, // default value to return when there is no addon plugin to hook on it

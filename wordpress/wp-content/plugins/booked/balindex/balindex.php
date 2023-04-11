@@ -47,6 +47,17 @@ class Balindex{
         }
         
     }
+
+    public function getProductByTimeSlot($timeslot)
+    {
+        $booked_default = get_option( 'booked_defaults' );
+        
+        //Removes the same values
+        if(count($booked_default['productIds']) > 0)
+        {
+            return array_unique($booked_default['productIds']);
+        }
+    }
     
 
     

@@ -1228,7 +1228,6 @@ function booked_render_custom_fields($calendar = false){
 							
 							endif;
 						
-							
 							$reset_subs = apply_filters(
 								'booked_custom_fields_add_template_subs',
 								$field_type,
@@ -1264,9 +1263,10 @@ function booked_render_custom_fields($calendar = false){
 							</li><?php
 
 						break;
-
 						
 						case 'paid-service-label':
+							
+							//Gets all products that added to timeslots
 							$balindex = new Balindex();
 							$products = $balindex->getTimeslotProducts();
 							?>
@@ -1292,8 +1292,8 @@ function booked_render_custom_fields($calendar = false){
 											</select>
 											<!-- <span class="cf-delete"><i class="fa-solid fa-trash-can"></i></span> -->
 										</li>
-										</ul>
-										</li>
+									</ul>
+								</li>
 
 							<?php
 						break;
@@ -1355,10 +1355,6 @@ function booked_render_custom_fields($calendar = false){
 							</li><?php
 
 						break;
-
-						
-
-						
 
 						default:
 							$look_for_subs_action = apply_filters(

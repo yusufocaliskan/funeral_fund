@@ -4,3 +4,4 @@
 	<input type="hidden" name="<?php echo $name; ?>" />
 	<select <?php echo $data_attributes ?> <?php if ($is_required): echo ' required="required"'; endif; ?> class="field-paid-service-select" name="<?php echo $name; ?>">
 		<option value=""><?php _e('Select a Product', 'booked'); ?></option>
+		

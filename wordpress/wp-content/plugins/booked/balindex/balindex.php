@@ -29,7 +29,7 @@ class Balindex{
         $select = $this->DB->get_results("
                     SELECT * FROM ".$this->DB->prefix."posts 
                     LEFT JOIN ".$this->DB->prefix."wc_product_meta_lookup 
-                        ON wp_posts.ID = ".$this->DB->prefix."wc_product_meta_lookup.product_id
+                        ON ".$this->DB->prefix."posts.ID = ".$this->DB->prefix."wc_product_meta_lookup.product_id
                         
                     WHERE ".$this->DB->prefix."posts.post_type = 'product'
                     ");
@@ -44,7 +44,7 @@ class Balindex{
         $booked_default = get_option( 'booked_defaults' );
         
         //Removes the same values
-        if(count($booked_default['productIds']) > 0)
+        if($booked_default['productIds'])
         {
             return array_unique($booked_default['productIds']);
         }
@@ -56,7 +56,7 @@ class Balindex{
         $booked_default = get_option( 'booked_defaults' );
         
         //Removes the same values
-        if(count($booked_default['productIds']) > 0)
+        if($booked_default['productIds'])
         {
             return $booked_default[$this->shortDaynName($day).'-details'];
         }

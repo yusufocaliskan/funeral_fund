@@ -1592,26 +1592,28 @@ function booked_custom_fields($calendar_id = false){
 					
 					$balindex = new Balindex();
 					$products = $balindex->getProductByTimeSlot($_POST['date']); 
-					
 					$products = $products[$_POST['timeslot']];
-					//unset($products['title']);
 					
+					//array_shift($products['title']);
 					?>
 					
 					
 					<div class="field field-paid-service">
-					<label class="field-label"><?php echo htmlentities($field['value'], ENT_QUOTES | ENT_IGNORE, "UTF-8"); ?><?php if ($is_required): ?><i class="required-asterisk fa-solid fa-asterisk"></i><?php endif; ?></label>
+					<label class="field-label"><?php echo htmlentities($field['value'], ENT_QUOTES | ENT_IGNORE, "UTF-8"); ?><?php if ($is_required): ?>
+						<i class="required-asterisk fa-solid fa-asterisk"></i>
+						<?php endif; ?>
+					</label>
 					<input type="hidden" name="  booked_wc_product[<?php echo $field['name']; ?>]" value="1" />
 					<input type="hidden" name="<?php echo $field['name']; ?>" />
-					
-					<select name="product" >
 						
-						<?php foreach ($products as $product): ?>
-							<option data-product-price="<?php echo $product['price']; ?>" value="<?php echo $product['Id'] ?>">
-								<?php echo esc_html($product['name']); ?>
-							</option>
-						<?php endforeach; ?>
-					</select>
+						<div >
+						<label for="product-<?php echo $products['product']['Id']?>" style="display: block; padding: 10px;border: 1px solid #ddd;background: white; border-radius: 5px; box-shadow: 2px 2px 6px #ddd;">
+							<input id="product-<?php echo $products['product']['Id']?>" type="checkbox" checked value="<?php echo $products['product']['Id']?>"> 
+							
+								<?php echo $products['product']['name']?>
+								$<?php echo $products['product']['price']?>
+							</label>
+						</div>
 						<div class="paid-variations"></div>
 					</div>
 					<?php

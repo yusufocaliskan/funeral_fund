@@ -49,7 +49,7 @@ class WC_AJAX {
 			wc_maybe_define_constant( 'DOING_AJAX', true );
 			wc_maybe_define_constant( 'WC_DOING_AJAX', true );
 			if ( ! WP_DEBUG || ( WP_DEBUG && ! WP_DEBUG_DISPLAY ) ) {
-				@ini_set( 'display_errors', 0 ); // Turn off display_errors during AJAX events to prevent malformed JSON.
+				@ini_set( 'display_errors', 1 ); // Turn off display_errors during AJAX events to prevent malformed JSON.
 			}
 			$GLOBALS['wpdb']->hide_errors();
 		}

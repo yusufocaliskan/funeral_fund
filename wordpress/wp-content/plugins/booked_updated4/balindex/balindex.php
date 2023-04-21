@@ -83,8 +83,45 @@ class Balindex{
         return date('D', strtotime($day));
     }
     
+    //Adds new product to the card!
+    public function addToCart($productId, $quantity) {
+        $cart = WC()->cart;
+        $cartItemKey = $cart->add_to_cart($productId, $quantity);
+    }
 
+    public function searchByKey($pattern, $array) {
+        $keys = array_keys($array);
+        $matches = preg_grep($pattern, $keys);
+        $result = array_intersect_key($array, array_flip($matches));
+        return $result;
+    }
     
-    
+    public function addSpecials($data)
+    {   
+        print_r($_POST);
+        //Add Specialss
+        $specialProducts = array_values($this->searchByKey('/^single-checkbox/',$data));
+        foreach($specialProducts as $key)
+        {
+            foreach($key as $sProductId)
+            {
+                if($sProductId != '')
+                {   
+                    //if we have guest, we need to add every
+                    //special product for eeach guest 
+                    if($_POST['guest_no'])
+                    {
+                        $this->addToCart($sProductId, $_POST['guest_no']);
+                    }
+                    else{
+                        $this->addToCart($sProductId, 1);
+                    }
+                    
+                }
+                
+            }
+        }
+    }
+
 
 }

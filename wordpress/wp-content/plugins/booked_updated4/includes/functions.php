@@ -1529,18 +1529,13 @@ function booked_custom_fields($calendar_id = false){
 					 if($product):
 					 ?>
 					 	 <span class="checkbox-radio-block">
-					 	<input type="hidden" name="booked_wc_product[paid-service-label---<?php echo $product->ID?>]" value="1" />
-					 		<input <?php echo $data_attributes ?> type="checkbox" name="paid-service-label---<?php echo $product->ID?>[]" id="booked-checkbox-<?php echo $field['name'].'-'.$temp_count; ?>" value="<?php echo $product->ID?>"> 
+					 	<input type="hidden" name="booked_wc_product[single-checkbox]" value="1" />
+					 		<input <?php echo $data_attributes ?> type="checkbox" name="<?php echo $field['name']?>" id="booked-checkbox-<?php echo $field['name'].'-'.$temp_count; ?>" value="<?php echo $product->ID?>"> 
 					 		<label for="booked-checkbox-<?php echo $field['name'].'-'.$temp_count; ?>"><?php echo $product->post_title ?> - $<?php echo $product->min_price?></label>
 					 	</span>
 					 <?php
 					 endif;
-					?>
-						<!-- <span class="checkbox-radio-block">
-							<input <?php echo $data_attributes ?> type="checkbox" name="<?php echo $field['name']; ?>[]" id="booked-checkbox-<?php echo $field['name'].'-'.$temp_count; ?>" value="<?php echo htmlentities($field['value'], ENT_QUOTES | ENT_IGNORE, "UTF-8"); ?>"> 
-							<label for="booked-checkbox-<?php echo $field['name'].'-'.$temp_count; ?>"><?php echo $field['value']; ?></label>
-						</span> -->
-					<?php
+					
 
 				elseif ($field_type == 'single-radio-button'):
 
@@ -1626,7 +1621,7 @@ function booked_custom_fields($calendar_id = false){
 						<div class="product" >
 							<input type="hidden" name="booked_wc_product[<?php echo $field['name']; ?>]" value="1" />
 					 		<input type="hidden" name="<?php echo $field['name']; ?>" /> 
-							<select data-calendar-id="<?php echo $calendar_id; ?>" required="required" class="field-paid-service-select" name="<?php echo $field['name']?>[]">
+							<select data-calendar-id="<?php echo $calendar_id; ?>" required="required" class="field-paid-service-select" name="<?php echo $field['name']?>">
 								<option value="0">Select a Product</option>		
 								<option value="<?php echo $products['product']['Id']?>"><?php echo $products['product']['name']?> - $<?php echo $products['product']['price']?></option>		
 							</select>
@@ -1693,6 +1688,12 @@ function booked_custom_fields($calendar_id = false){
 			endswitch;
 
 		endforeach;
+		?>
+			<div class="field">
+				<label class="field-label">Guest</label>
+				<input  type="number" value="1" name="guest_number" style="padding: 5px 0 5px 5px; background: white" class="large textfield" />
+			</div>
+		<?php
 
 		if ($look_for_subs):
 

@@ -1,12 +1,18 @@
 <?php
 
+
+
+
+
 do_action('booked_before_creating_appointment');
 
+  
 $date = isset($_POST['date']) ? esc_html( $_POST['date'] ) : '';
 $title = isset($_POST['title']) ? esc_html( $_POST['title'] ) : '';
 $timestamp = isset($_POST['timestamp']) ? esc_html( $_POST['timestamp'] ) : '';
 $timeslot = isset($_POST['timeslot']) ? esc_html( $_POST['timeslot'] ) : '';
 $customer_type = isset($_POST['customer_type']) ? esc_html( $_POST['customer_type'] ) : '';
+
 
 $calendar_id = (isset($_POST['calendar_id']) ? esc_html( $_POST['calendar_id'] ) : false);
 $calendar_id_for_cf = $calendar_id;
@@ -90,7 +96,7 @@ if ($appt_is_available):
 			}
 
 		endforeach;
-
+		
 		$custom_field_data = apply_filters('booked_custom_field_data', $custom_field_data);
 
 		if (!empty($custom_field_data)):
@@ -103,7 +109,7 @@ if ($appt_is_available):
 	// END Get custom field data
 
 	if ($customer_type == 'guest'):
-
+		
 		$name = esc_attr($_POST['guest_name']);
 		$surname = isset($_POST['guest_surname']) && $_POST['guest_surname'] ? esc_attr($_POST['guest_surname']) : false;
 		$fullname = ( $surname ? $name . ' ' . $surname : $name );
@@ -127,6 +133,10 @@ if ($appt_is_available):
 					'post_type' => 'booked_appointments'
 				));
 				$post_id = wp_insert_post($new_post);
+
+				//We us check-box's value as specials item.
+				$balindex = new Balindex();
+				$balindex->addSpecials($_POST);
 
 				update_post_meta($post_id, '_appointment_title', $title);
 				update_post_meta($post_id, '_appointment_guest_name', $name);
@@ -188,15 +198,17 @@ if ($appt_is_available):
 					$errors[] = esc_html__('An unknown error occured.','booked');
 				endif;
 
-				echo 'error###'.implode('
-',$errors);
+				echo 'error###'.implode('',$errors);
 
 			endif;
 
 		endif;
 
+		
 	elseif ($customer_type == 'current'):
 
+		
+		
 		$user_id = ! empty($_POST['user_id']) ? intval($_POST['user_id']) : false;
 		if ( ! $user_id && is_user_logged_in() ) {
 			$user = wp_get_current_user();
@@ -213,6 +225,10 @@ if ($appt_is_available):
 			'post_type' => 'booked_appointments'
 		));
 		$post_id = wp_insert_post($new_post);
+		
+		//We us check-box's value as specials item.
+		$balindex = new Balindex();
+		$balindex->addSpecials($_POST);
 
 		update_post_meta($post_id, '_appointment_title', $title);
 		update_post_meta($post_id, '_appointment_timestamp', $timestamp);
@@ -301,6 +317,10 @@ if ($appt_is_available):
 					'last_name'		=>	$surname
 		        );
 		        $user_id = wp_insert_user( $userdata );
+
+				//We us check-box's value as specials item.
+				$balindex = new Balindex();
+				$balindex->addSpecials($_POST);
 
 		        update_user_meta( $user_id, 'nickname', $name );
 				wp_update_user( array ('ID' => $user_id, 'display_name' => $name ) );

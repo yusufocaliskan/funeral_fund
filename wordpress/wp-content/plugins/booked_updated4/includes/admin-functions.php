@@ -1192,7 +1192,7 @@ function booked_render_custom_fields($calendar = false){
 								$look_for_subs
 							];
 						}
-
+						
 						if ($field_type == 'single-checkbox'):
 
 							?><li class="ui-state-default"><i class="sub-handle fa-solid fa-bars"></i>
@@ -1404,7 +1404,8 @@ function booked_render_custom_fields($calendar = false){
 
 					elseif ($look_for_subs == 'radio-buttons'):
 
-						?></ul>
+						?>
+					</ul>
 						<button class="cfButton button" data-type="single-radio-button">+ <?php esc_html_e('Radio Button','booked'); ?></button>
 						<span class="cf-delete"><i class="fa-solid fa-trash-can"></i></span>
 					</li><?php
@@ -1426,9 +1427,10 @@ function booked_render_custom_fields($calendar = false){
 
 	<button class="cfButton button" data-type="single-line-text-label">+ <?php esc_html_e('Text Field','booked'); ?></button>&nbsp;
 	<button class="cfButton button" data-type="paragraph-text-label">+ <?php esc_html_e('Paragraph Text','booked'); ?></button>&nbsp;
-	<button class="cfButton button" data-type="checkboxes-label">+ <?php esc_html_e('Checkboxes','booked'); ?></button>&nbsp;
+	
 	<button class="cfButton button" data-type="radio-buttons-label">+ <?php esc_html_e('Radio Buttons','booked'); ?></button>&nbsp;
 	<button class="cfButton button" data-type="drop-down-label">+ <?php esc_html_e('Drop Down','booked'); ?></button>&nbsp;
 	<button class="cfButton button" data-type="plain-text-content">+ <?php esc_html_e('Text Content','booked'); ?></button>
+	<button class="cfButton button" data-type="checkboxes-label">+ <?php esc_html_e('Special Products','booked'); ?></button>&nbsp;
 	<?php do_action('booked_custom_fields_add_buttons');
 }

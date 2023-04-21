@@ -7,7 +7,6 @@ class Booked_WC_Cart {
 	public static function add_appointment( $app_id=null ) {
 
 		$app_id = intval($app_id);
-
 		$appointment = Booked_WC_Appointment::get($app_id);
 		if ( !$appointment->products ) {
 			$message = sprintf(__('Appointment with ID %1$d does not have any products assigned to it.', 'booked'), $post_id);
@@ -239,7 +238,11 @@ class Booked_WC_Cart_Hooks {
 	  		$custom_fields = (array) $appointment->custom_fields;
 
 			foreach ($custom_fields as $field_label => $field_value) {
-				$product_title .= '<br><small><b>' . $field_label . ':</b>&nbsp;' . $field_value . '</small>';
+				if($field_label != 'Special')
+				{
+					$product_title .= '<br><small><b>' . $field_label . ':</b>&nbsp;' . $field_value . '</small>';
+				}
+				
 			}
 
   			$product_title .= '</div>';

@@ -166,6 +166,7 @@ var booked_load_calendar_date_booking_options;
           guest_name = thisForm.find("input[name=guest_name]").val(),
           guest_email = thisForm.find("input[name=guest_email]").val(),
           guest_surname = thisForm.find("input[name=guest_surname]").val(),
+          guest_number = thisForm.find("input[name=guest_number]").val(),
           email = thisForm.find("input[name=email]").val(),
           password = thisForm.find("input[name=password]").val(),
           date = thisForm.find("input[name=date]").val(),

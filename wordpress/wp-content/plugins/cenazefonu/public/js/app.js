@@ -137,7 +137,9 @@
         localStorage.removeItem("formData");
 
         //Clear all form element.
-        location.reload();
+        setTimeout(() => {
+          location.reload();
+        }, 3000);
         go_info_tab();
       });
   }

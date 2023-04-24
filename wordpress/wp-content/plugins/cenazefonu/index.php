@@ -12,8 +12,12 @@
  define('FRAMEWORK', PLUGIN_DIR.'/framework/');
  define('VIEWS', PLUGIN_DIR.'/views/');
 
+
+ 
+
  //Start!
 require_once FRAMEWORK.'core.php';
+
 
 //Loadin necessary scripts
 add_action( 'admin_enqueue_scripts','load_scripts');
@@ -24,7 +28,7 @@ function load_scripts()
     wp_enqueue_style( 'bootsrapt', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css',[],['1.0.0.','all',['crossorigin' => 'anonymous','integrity'=>'sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ']]);
     
     //Javascripts
-    wp_enqueue_script('app-script', PLUGIN_URL.'/public/js/app.js',[], false,true);
+    wp_enqueue_script('app-script', PLUGIN_URL.'/public/js/app.js',['jquery'], false,true);
 
     wp_register_script('bootstrap-script', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js');
     wp_enqueue_script('bootstrap-script', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js');
@@ -34,9 +38,9 @@ function load_scripts()
 
 
 
-add_shortcode( 'cenaze_formu', 'cenaze_formu_shortcode' );
+add_shortcode( 'cenaze-fonu', 'cenaze_formu_shortcode' );
 function cenaze_formu_shortcode(){
-    wp_enqueue_script('app-script', PLUGIN_URL.'/public/js/app.js',[], false,true);
+    wp_enqueue_script('app-script', PLUGIN_URL.'/public/js/app.js',['jquery'], false,true);
     wp_enqueue_style( 'master', PLUGIN_URL.'/public/css/master.css');
     wp_enqueue_style( 'bootsrapt', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css',[],['1.0.0.','all',['crossorigin' => 'anonymous','integrity'=>'sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ']]);
 

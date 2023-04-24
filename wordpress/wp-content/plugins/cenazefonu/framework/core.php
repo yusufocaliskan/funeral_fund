@@ -3,6 +3,7 @@
 //get database class
 require FRAMEWORK."/database.php";
 
+
 class Core
 {
     public $database;
@@ -50,12 +51,14 @@ class Core
         
         //Create ajax actions
         //$this->ajax_requests();
+
+        
     }
 
     public function add_link2admin_menu()
     {
-        add_menu_page( _('Caneze Fonu','cenaze-fonu'),
-         _('Caneze Fonu','cenaze-fonu'), 
+        add_menu_page( _('Caneze Fonu'),
+         _('Caneze Fonu'), 
          'manage_options', 'cenaze-fonu',[$this,'main_template'] );
     }
 

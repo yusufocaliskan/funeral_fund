@@ -58,6 +58,8 @@ class Balindex{
     {
         $booked_default = get_option( 'booked_defaults' );
         
+        if($booked_default == '' || !is_array($booked_default)) return false;
+
         //Removes the same values
         if($booked_default['productIds'])
         {

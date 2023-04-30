@@ -48,10 +48,12 @@ function cenaze_formu_shortcode(){
     wp_enqueue_script('bootstrap-script', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js');
     
     ob_start();
-    $content = file_get_contents(VIEWS.'registration_form.php');
-    ob_end_flush();
+
+    require VIEWS.'registration_form.php';
+    $content = ob_get_clean();
 
     return $content;
+
 }
 
 

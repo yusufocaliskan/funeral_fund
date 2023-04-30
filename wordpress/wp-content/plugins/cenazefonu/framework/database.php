@@ -37,6 +37,26 @@ class Database
             dbDelta( $sql );
     }
 
+    public function crate_member_table()
+    {
+        global $wpdb;
+        
+            $table = $wpdb->prefix.'cf_member_info';
+            $sql ="CREATE TABLE IF NOT EXISTS $table (
+                    Id int(11) NOT NULL AUTO_INCREMENT,
+                    member_gender ENUM('man','woman'),
+                    member_name VARCHAR(50) NOT NULL,
+                    member_age VARCHAR(50) NOT NULL,
+                    member_lastname VARCHAR(50) NOT NULL,
+                    member_birthdate VARCHAR(10),
+                    member_intimacy VARCHAR(50),
+                    householderId INT(255),
+                    PRIMARY KEY(Id)
+                )";
+            // Create the table
+            dbDelta( $sql );
+    }
+
     public function add_new($data)
     {
         global $wpdb;
@@ -59,6 +79,25 @@ class Database
         unset($data['ism']);
 
         $table = $wpdb->prefix.'cf_householder_info';
+
+        $insert = $wpdb->insert($table, $data);
+        
+        return $wpdb->insert_id;
+        
+    }
+
+    public function add_new_member($data, $householderId)
+    {
+        global $wpdb;
+        $data['member_age'] = date('Y')-$data['householder_birthyear'];
+        $member_birthdate = $data['member_birthday'].'-'.$data['member_birthmonth'].'-'.$data['member_birthyear'];
+        $data['member_birthdate'] = $member_birthdate;
+        $data['householderId'] = $householderId;
+        unset($data['member_birthday']);
+        unset($data['member_birthmonth']);
+        unset($data['member_birthyear']);
+
+        $table = $wpdb->prefix.'cf_member_info';
 
         $insert = $wpdb->insert($table, $data);
         return $insert;
@@ -87,6 +126,31 @@ class Database
         return $select;
     }
 
+    public function get_houserholder_byId($householderId)
+    {
+        global $wpdb;
+        $table = $wpdb->prefix.'cf_householder_info';
+        
+        $select = $wpdb->get_row("
+                    SELECT *
+                    FROM $table 
+                    WHERE Id = '".$householderId."'");
+        return $select;
+    }
+
+    public function get_members_by_houserholderId($householderId)
+    {
+        global $wpdb;
+        $table = $wpdb->prefix.'cf_member_info';
+        
+        $select = $wpdb->get_results("
+                    SELECT *
+                    FROM $table 
+                    WHERE householderId = '".$householderId."'
+                    ORDER BY Id DESC");
+        return $select;
+    }
+
     
 
     public function approve($memberId)
@@ -99,14 +163,27 @@ class Database
         return $update;
     }
 
+    public function delete_family_members($householderId)
+    {   
+        global $wpdb;
+        $table = $wpdb->prefix.'cf_member_info';
+        $where =  ['householderId'=>$householderId];
+        $delete = $wpdb->delete($table,  $where);
+
+        return $delete;
+    }
+
     public function delete($memberId)
     {   
         global $wpdb;
         $table = $wpdb->prefix.'cf_householder_info';
         $where =  ['Id'=>$memberId];
         $delete = $wpdb->delete($table,  $where);
+
+
         return $delete;
     }
+    
 
     public function reject($memberId)
     {

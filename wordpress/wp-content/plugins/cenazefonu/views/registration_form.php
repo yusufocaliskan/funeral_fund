@@ -1,9 +1,4 @@
-
-
-
-
 <div class="registration_form">
-
     <div style="display:none" class="toast-container position-fixed  top-10 end-0 p-3">
     <div id="liveToast" class=" toast" role="alert" aria-live="assertive" aria-atomic="true" style="display: flex; align-items: center; padding: 0 10px">
         <div style="width: 35px; ">
@@ -85,16 +80,24 @@
                         </svg>
                     </i>
                     <h3>Başlangıç</h3>
-                    <p>Fondan yararlanma hakkı kayıt tarihinden 2 ay sonra başlar.</p>
+                    <p>Fondan yararlanma hakkı kayıt tarihinden 3 ay sonra başlar.</p>
                 </div>
                 <div class="information-item">
                     <i><svg style="width: 32px !important;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor" >
                         <path d="M528 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h480c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm0 400H48V80h480v352zM208 256c35.3 0 64-28.7 64-64s-28.7-64-64-64-64 28.7-64 64 28.7 64 64 64zm-89.6 128h179.2c12.4 0 22.4-8.6 22.4-19.2v-19.2c0-31.8-30.1-57.6-67.2-57.6-10.8 0-18.7 8-44.8 8-26.9 0-33.4-8-44.8-8-37.1 0-67.2 25.8-67.2 57.6v19.2c0 10.6 10 19.2 22.4 19.2zM360 320h112c4.4 0 8-3.6 8-8v-16c0-4.4-3.6-8-8-8H360c-4.4 0-8 3.6-8 8v16c0 4.4 3.6 8 8 8zm0-64h112c4.4 0 8-3.6 8-8v-16c0-4.4-3.6-8-8-8H360c-4.4 0-8 3.6-8 8v16c0 4.4 3.6 8 8 8zm0-64h112c4.4 0 8-3.6 8-8v-16c0-4.4-3.6-8-8-8H360c-4.4 0-8 3.6-8 8v16c0 4.4 3.6 8 8 8z"></path>
                     </svg>
                     </i>
-                    <h3>Üye Hesabı</h3>
-                    <p>Üye Hesabı (ve Üye Kartı) sadece aile reisi adına düzenlenir, diğer aile fertleri aynı hesabı ve aynı üye numarasını kullanırlar.</p>
+                    <h3>Üye Kartı</h3>
+                    <p> Üye Kartı sadece aile reisi adına düzenlenir.</p>
                 </div>
+                <div class="information-item">
+                <i><svg style="width: 30px !important;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="h-8 w-8">
+                            <path d="M464 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V86a6 6 0 0 1 6-6h404a6 6 0 0 1 6 6v340a6 6 0 0 1-6 6zm-42-92v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm-252 12c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36z"></path>
+                        </svg>
+                    </i>
+                    <h3>Senelik Bağışlar</h3>
+                    <p>Senede bir defa ödenmektedir. Sabit <strong>65 €</strong> dur.</p>
+                    </div>
                 <div class="information-item">
                 <i><svg style="width: 30px !important;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="h-8 w-8">
                             <path d="M464 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V86a6 6 0 0 1 6-6h404a6 6 0 0 1 6 6v340a6 6 0 0 1-6 6zm-42-92v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm-252 12c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36z"></path>
@@ -113,27 +116,51 @@
                             <tbody>
                                 <tr>
                                     <th>0 - 19 yaş arası</th>
-                                    <td>30€</td>
+                                    <td>30 €</td>
                                 </tr>
                                 <tr>
                                     <th>20 - 29 yaş arası</th>
-                                    <td>50€</td>
+                                    <td>50 €</td>
                                 </tr>
                                 <tr>
                                     <th>30 - 39 yaş arası</th>
-                                    <td>75€</td>
+                                    <td>75 €</td>
                                 </tr>
                                 <tr>
-                                    <th>40 - 49 yaş arası</th>
-                                    <td>100€</td>
+                                    <th>40 - 44 yaş arası</th>
+                                    <td>100 €</td>
                                 </tr>
                                 <tr>
-                                    <th>50 - 59 yaş arası</th>
-                                    <td>200€</td>
+                                    <th>45 - 49 yaş arası</th>
+                                    <td>130 €</td>
                                 </tr>
                                 <tr>
-                                    <th>70 yaş ve üzeri</th>
-                                    <td>1000€</td>
+                                    <th>50 - 54 yaş arası</th>
+                                    <td>175 €</td>
+                                </tr>
+                                <tr>
+                                    <th>55 - 59 yaş ve üzeri</th>
+                                    <td>275 €</td>
+                                </tr>
+                                <tr>
+                                    <th>60 - 64 yaş ve üzeri</th>
+                                    <td>475 €</td>
+                                </tr>
+                                <tr>
+                                    <th>65 - 69 yaş ve üzeri</th>
+                                    <td>850 €</td>
+                                </tr>
+                                <tr>
+                                    <th>70 - 74 yaş ve üzeri</th>
+                                    <td>1000 €</td>
+                                </tr>
+                                <tr>
+                                    <th>75 - 79 yaş ve üzeri</th>
+                                    <td>1500 €</td>
+                                </tr>
+                                <tr>
+                                    <th>80 yaş ve üzeri</th>
+                                    <td>2250 €</td>
                                 </tr>
                                 
                             </tbody>
@@ -147,17 +174,17 @@
                         </svg>
                     </i>
                     <h3>Cenaze Fonu Yönergesi</h3>
-                    <p>Başvurunuza bteraşlamadan önce Cenaze Fonu Yönergesini okumakla yükümlüsünüz.</p>
+                    <p>Başvurunuza başlamadan önce <a target="_blank" href="https://cenazefonu.hamele.org/hakkimizda/yardimlasma-fonu-yonergesi/">Cenaze Fonu Yönergesini</a> okumakla yükümlüsünüz.</p>
                 </div>
                 <div class="tab-content-bottom">
-                    <span type="submit" class="btn btn-lg btn-primary go-to-form" data-tab="1">Yeni Kayıt 
+                    <span style="background: #06aedb !important " type="submit" class="btn btn-lg btn-primary go-to-form" data-tab="1">Yeni Kayıt 
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                         </svg>
                     </span>
                 </div>
             </div>
-            <div class="tab-content  " data-tab="1">
+            <div class="tab-content   " data-tab="1">
                 
                 
                 <div class="card" style="margin-bottom: 20px; padding :10px">
@@ -166,8 +193,10 @@
                         <svg  style="margin-bottom: 5px" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
                             <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z"/>
                         </svg>
-                        <span style="color: #666">Toplam Giriş Üçreti</span>
+                        <span style="color: #333">Toplam Giriş Ücreti</span>
+                        
                         <div class="display-6"><span class="form_price">0</span> <small style="font-size: 25px;">€</small></div>
+                        <small style="color: #888">+ yıllık aidat 65 €.</small>
                         <input type="hidden" name="form_price" />
                     </div>
                 </div>
@@ -189,8 +218,8 @@
                         <input placeholder="Buraya yazın" type="text" class="form-control" id="householder_lastname" name="householder_lastname">
                     </div>
                     <div class="mb-3">
-                        <label for="householder_birthplace" class="form-label">Doğum Yeri <span>Gerekli</span></label>
-                        <input placeholder="Buraya yazın" type="text" class="form-control" id="householder_birthplace" name="householder_birthplace">
+                        <label for="householder_birthplace" class="form-label">Doğum Yeri / Ülke <span>Gerekli</span></label>
+                        <input placeholder="Şehir / Ülke" type="text" class="form-control" id="householder_birthplace" name="householder_birthplace">
                     </div>
 
                     
@@ -266,88 +295,42 @@
                         </div>
                     </div>
 
-                    <div class="form-check form-switch mb-3 " style="margin-top: 20px">
-                        <span class="form-check-label" for="isset_member" style="margin-left:20px;">Aile Ferdi var mı?</span>
-                        <input placeholder="Buraya yazın" class="btn-lg form-check-input isset_member" style="width: 50px; border-width: 3px; border-color: #ddd; height: 25px; cursor: pointer" name="isset_member"  type="checkbox" role="switch" id="isset_member">
-                        <input value="no" class="btn-lg form-check-input ism" style="width: 50px; border-width: 3px; border-color: #ddd; height: 25px; cursor: pointer" name="ism" type="hidden" id="ism">
+                    <div class="family_member_list card">
+                    <div class="tab-content-title">
+                            <i>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+                                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
+                                <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"></path>
+                            </svg>
+                            </i>
+                    Aile Ferdi</div>
+                        
+                    <div class="list-group member-list" style="margin: 10px">
+                        
+                        
                     </div>
                     </div>
 
-                    <div class="family_member_form">
-                    <div class="card" style="padding :20px; margin-bottom: 20px">
-                    <div class="tab-content-title">
-                        <i>
-                        <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+                    
+
+                    <div class="add-new-family-member" style="margin-top: 20px; display: flex; align-items:center">
+                    <input value="no" class="btn-lg form-check-input ism" style="width: 50px; border-width: 3px; border-color: #ddd; height: 25px; cursor: pointer" name="ism" type="hidden" id="ism">
+                    <input value="no" class="btn-lg form-check-input isset_member" style="width: 50px; border-width: 3px; border-color: #ddd; height: 25px; cursor: pointer" name="isset_member" type="hidden" id="isset_member">
+                    <i style="margin-right: 10px">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"  fill="#deb460" class="bi bi-person-add" viewBox="0 0 16 16">
                             <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
                             <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
                         </svg>
-                        </i>
-                Aile Ferdi</div>
-                        <div class="mb-3">
-                            <label for="member_name" class="form-label">Adı <span>Gerekli</span></label>
-                            <input placeholder="Buraya yazın" name="member_name" type="text" class="form-control" id="member_name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="member_lastname" class="form-label">Soyadı <span>Gerekli</span></label>
-                            <input placeholder="Buraya yazın" type="text" class="form-control" id="member_lastname" name="member_lastname">
-                        </div>
+                    </i> 
+            
+            <span data-bs-toggle="modal" style="color: #06aedb !important" data-bs-target="#addNewMemeber" class="add-new-member" data-bs-toggle="modal">Yeni Aile Ferdi Ekle</span>
+            </div>
+                    </div>
 
-
-                        <div class="mb-3 member_birthday">
-                            <label for="member_gender class="form-label">Doğum Tarihi <span>Gerekli</span></label>
-                        
-                            
-                        <div class=" birthday-selects">
-                        
-                            <div class="householder_birthday">
-                                <select name="member_birthday" class="form-select birthday-select">
-                                    <option selected value="0">Gün</option>
-                                </select>
-                            </div>
-
-                            <div class="member_birthmonth">
-                                <select name="member_birthmonth" class="form-select month-select">
-                                    <option selected value="0">Ay</option>
-                                </select>
-                            </div>
-
-                            <div class="member_birthyear recalculate-price">
-                                <select name="member_birthyear" class="form-select year-select">
-                                    <option selected value="0">Yıl</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="member_gender mb-3" >
-                            <label style="margin-top: 20px" for="member_gender class="form-label">Cinsiyet <span>Gerekli</span></label>
-                            <select name="member_gender" class="form-select" id="member_gender">
-                                <option selected valeu="0">Seçin</option>
-                                <option value="woman">Kadın</option>
-                                <option value="man">Erkek</option>
-                            </select>
-                        </div>
-                        <div class="member_intimacy mb-3">
-                            <label for="member_intimacy class="form-label">Yakınlık <span>Gerekli</span></label>
-                            <select name="member_intimacy" class="form-select" id="ferd_form_relationship" name="ferd[relationship]" required>
-                                <option value="0">Seçiniz</option>
-                                <option value="hanimi">Hanımı</option>
-                                <option value="kizi">Kızı</option>
-                                <option value="annesi">Annesi</option>
-                                <option value="gelini">Gelini</option>
-                                <option value="kardesi">Kardeşi</option>
-                                <option value="torunu">Torunu</option>
-                                <option value="Kayin_validesi">Kayın Validesi</option>
-                                <option value="baldizi">Baldızı</option>
-                                <option value="yegeni">Yeğeni</option>
-                                <option value="diger_akrabasi">Diğer Akrabası</option>
-                            </select>
-                        </div>
-                        </div>
-
-                        </div>
-                    </div> <!-- family member -->
-
+                   <?php modal(false); ?>
+                   
                         <div class="tab-content-bottom">
-                            <span type="submit" class="display-information btn btn-lg btn-primary">Devam 
+                            <span style="background: #06aedb !important " type="submit" class="display-information btn btn-lg btn-primary">Devam 
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                                 </svg>
@@ -372,8 +355,10 @@
                         <svg  style="margin-bottom: 5px" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
                             <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z"/>
                         </svg>
-                        <span style="color: #666">Toplam Giriş Üçreti</span>
+                        <span style="color: #333">Toplam Giriş Ücreti</span>
+                        
                         <div class="display-6"><span class="form_price">0</span> <small style="font-size: 25px;">€</small></div>
+                        <small style="color: #888">+ yıllık aidat 65 €.</small>
                         <input type="hidden" name="form_price" />
                     </div>
                 
@@ -408,15 +393,8 @@
                         </i>
                 Aile Ferdi</div>
 
-                    <div class="last-info-item">
-                        <span>Adı / Soyadı</span>
-                        <p><span class="member_name">{member_name}</span> <span class="member_lastname">{member_lastname}</span> (<span class="member_gender">{member_gender}</span> - <span class="member_intimacy">{member_intimacy}</span>)  * <span class="badge bg-success text-white"><span style="color: white" class="member_age">{member_age}</span> yaşında</span></p>
-                    </div>
-                    <div class="last-info-item">
-                        <span>Doğum Tarihi</span>
-                        <p><span class="member_birthday">{member_birthday}</span> / <span class="member_birthmonth">{member_birthmonth}</span> / <span class="member_birthyear">{member_birthyear}</span></p>
-                    </div>
-                </div>
+                <div class="list-group member-list"  data-no-delete="yes" style="margin: 10px">
+                </div></div>
                 <div class="card" style="margin:20px 0px; padding :10px">
                     <div class="tab-content-title">
                         <i><svg xmlns="http://www.w3.org/2000/svg" style="width: 28px !important" fill="currentColor" class="bi bi-house-add" viewBox="0 0 16 16">
@@ -455,11 +433,11 @@
                 <div class="aggrement">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="agreement-checkbox" name="agreement">
-                        <label style="justify-content:inherit" for="agreement-checkbox"><a href="#" style="margin-right: 5px">Yönergeyi</a> okudum ve şartları kabul ediyorum. </label>
+                        <label style="justify-content:inherit" for="agreement-checkbox"><a target="_blank" href="https://cenazefonu.hamele.org/hakkimizda/yardimlasma-fonu-yonergesi/" style="margin-right: 5px">Yönergeyi</a> okudum ve şartları kabul ediyorum. </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="registration-agreement" name="registration-agreement">
-                        <label for="registration-agreement">Bilgilendirdiğim aile fertlerini üye yapılmasını istiyorum.</label>
+                        <label for="registration-agreement">Bilgilendirdiğim aile ferdlerini üye yapılmasını istiyorum.</label>
                     </div>
                 </div>
                 <div class="tab-content-bottom" style="margin-top: 30px">
@@ -481,3 +459,114 @@
             </form>
         </div>
 </div>
+
+
+<?php 
+
+function family_member_form($is_hidden = false, $add_new_one = false)
+{
+    ?>
+    
+        <div class="family_member_form">
+        <div class="card" style="padding :20px; margin-bottom: 20px">
+        <div class="tab-content-title">
+            <i>
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+                <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
+            </svg>
+            </i>
+    Aile Ferdi</div>
+            <div class="mb-3">
+                <label for="member_name" class="form-label">Adı <span>Gerekli</span></label>
+                <input placeholder="Buraya yazın" name="member_name" type="text" class="form-control" id="member_name">
+            </div>
+            <div class="mb-3">
+                <label for="member_lastname" class="form-label">Soyadı <span>Gerekli</span></label>
+                <input placeholder="Buraya yazın" type="text" class="form-control" id="member_lastname" name="member_lastname">
+            </div>
+
+
+            <div class="mb-3 member_birthday">
+                <label for="member_birthday class="form-label">Doğum Tarihi <span>Gerekli</span></label>
+            
+                
+            <div class=" birthday-selects">
+            
+                <div class="householder_birthday">
+                    <select name="member_birthday" class="form-select birthday-select">
+                        <option selected value="0">Gün</option>
+                    </select>
+                </div>
+
+                <div class="member_birthmonth">
+                    <select name="member_birthmonth" class="form-select month-select">
+                        <option selected value="0">Ay</option>
+                    </select>
+                </div>
+
+                <div class="member_birthyear">
+                    <select name="member_birthyear" class="form-select year-select">
+                        <option selected value="0">Yıl</option>
+                    </select>
+                </div>
+            </div>
+            <div class="member_gender mb-3" >
+                <label style="margin-top: 20px" for="member_gender class="form-label">Cinsiyet <span>Gerekli</span></label>
+                <select name="member_gender" class="form-select" id="member_gender">
+                    <option selected value="0">Seçin</option>
+                    <option value="woman">Kadın</option>
+                    <option value="man">Erkek</option>
+                </select>
+            </div>
+            <div class="member_intimacy mb-3">
+                <label for="member_intimacy class="form-label">Yakınlık <span>Gerekli</span></label>
+                <select name="member_intimacy" class="form-select" id="ferd_form_relationship" name="ferd[relationship]" required>
+                    <option value="0">Seçiniz</option>
+                    <option value="esi">Eşi</option>
+                    <option value="cocugu">Çocuğu</option>
+                </select>
+            </div>
+            </div>
+
+            </div>
+            
+        
+
+        
+        </div> <!-- family member -->
+    <?php
+    }
+
+?>
+
+<?php 
+
+    function modal()
+    {
+    ?>
+
+    <!-- Modal -->
+        <!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="addNewMemeber" tabindex="-1" aria-labelledby="addNewMemeberLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="addNewMemeberLabel">Aile Ferdi Ekle</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <?php family_member_form() ?>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn close-modal btn-secondary" data-bs-dismiss="modal">Kapat</button>
+        <button type="button" class="btn btn-primary add-member">Ekle</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <?php
+    }
+
+?>

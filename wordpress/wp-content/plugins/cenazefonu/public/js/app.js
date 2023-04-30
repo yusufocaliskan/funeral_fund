@@ -1,9 +1,12 @@
 (($) => {
   //Get the information from form(s)
+
   const display_info = document.querySelector(".display-information");
   const registration_form = document.querySelectorAll(
     "#registration_form select, #registration_form input, #registration_form textarea"
   );
+  const intimacy_lookup = { esi: "Eşi", cocugu: "Çocuğu" };
+  const gender_lookup = { woman: "Kadın", man: "Erkek" };
 
   //show information to user
   const formData = {};
@@ -30,8 +33,10 @@
       }
     });
 
+    const member_info = JSON.parse(localStorage.getItem("member_info"));
+
     //hide family_member_information if there were'nt one
-    if (formData["isset_member"] == "no") {
+    if (member_info && member_info.length <= 0) {
       document.querySelector(".family_member_information").style.display =
         "none";
     } else {
@@ -41,38 +46,28 @@
 
     //calculates age
     calc_age();
-
+    const memberData = JSON.parse(localStorage.getItem("member_info"));
+    const data = { formData: formData, memberData: memberData };
     //make a request to control the form
-    await make_request(formData, "form_control_handler")
+    await make_request(data, "form_control_handler")
       .then((res) => {
         return JSON.parse(res);
       })
       .then((res) => {
+        console.log(res);
         if (res.type == "success") {
           //set ages
           document.querySelector(".householder_age").textContent =
             res.ages.householder_age;
-          document.querySelector(".member_age").textContent =
-            res.ages.member_age;
 
           set_price_to_form(res.total_price);
           //set genders
           document.querySelector(".householder_age").textContent =
             res.ages.householder_age;
-          document.querySelector(".member_age").textContent =
-            res.ages.member_age;
 
           document.querySelector(
             ".information-dispay-template .householder_gender"
           ).textContent = res.lookups.householder_gender;
-
-          document.querySelector(
-            ".information-dispay-template .member_gender"
-          ).textContent = res.lookups.householder_gender;
-
-          document.querySelector(
-            ".information-dispay-template .member_intimacy"
-          ).textContent = res.lookups.member_intimacy;
 
           //form status
           document.querySelector('input[name="fs"]').value = "y";
@@ -106,6 +101,7 @@
 
     //get the form data from storage
     const formData = JSON.parse(localStorage.getItem("formData"));
+    const memberData = JSON.parse(localStorage.getItem("member_info"));
     const agreement = document.querySelector('input[name="agreement"]');
     const registration_agreement = document.querySelector(
       'input[name="registration-agreement"]'
@@ -116,9 +112,10 @@
       show_message("Sözleşleme koşullarını kabul etmelisiniz.", "bg-warning");
       return;
     }
+    const data = { formData: formData, memberData: memberData };
 
     await make_request(
-      formData,
+      data,
       "add_new_registration",
       "Form kaydediliyor,bir saniye..."
     )
@@ -135,6 +132,7 @@
         }
 
         localStorage.removeItem("formData");
+        localStorage.removeItem("member_info");
 
         //Clear all form element.
         setTimeout(() => {
@@ -168,16 +166,16 @@
     const householder_birthyear = document.querySelector(
       'select[name="householder_birthyear"]'
     );
-    console.log(this_year - householder_birthyear.value);
+
     document.querySelector(".householder_age").textContent =
       this_year - householder_birthyear.value;
 
-    const member_birthyear = document.querySelector(
-      'select[name="member_birthyear"]'
-    );
+    // const member_birthyear = document.querySelector(
+    //   'select[name="member_birthyear"]'
+    // );
 
-    document.querySelector(".member_age").textContent =
-      this_year - member_birthyear.value;
+    // document.querySelector(".member_age").textContent =
+    //   this_year - member_birthyear.value;
   }
 
   //Updates new form price whenever
@@ -185,67 +183,31 @@
   const recalculators = document.querySelectorAll(".recalculate-price select");
   recalculators.forEach((rc) => {
     rc.addEventListener("change", async () => {
-      await update_total_price(rc);
+      await update_total_price();
     });
   });
-  async function update_total_price(selectBox) {
+
+  async function update_total_price() {
     //get housholder age
     const data = {};
-    data[`${selectBox.name}`] = selectBox.value;
-
-    //add if one of them all-ready selected
-    if (selectBox.name == "householder_birthyear") {
-      //look for member_birthyear
-      const member_year = document.querySelector(
-        'select[name="member_birthyear"]'
-      ).value;
-      data["member_birthyear"] = member_year;
-    }
-    if (selectBox.name == "member_birthyear") {
-      //look for member_birthyear
-      const householder_birthyear = document.querySelector(
-        'select[name="householder_birthyear"]'
-      ).value;
-      data["householder_birthyear"] = householder_birthyear;
-    }
-
-    //make request if all them is selected
-    const h_day = document.querySelector(
-      'select[name="householder_birthday"]'
-    ).value;
-    const h_month = document.querySelector(
-      'select[name="householder_birthmonth"]'
+    data["householder_birthyear"] = document.querySelector(
+      'select[name="householder_birthyear"]'
     ).value;
 
-    const isset_member = document.querySelector('input[name="ism"]');
-
-    const m_day = document.querySelector(
-      'select[name="member_birthday"]'
-    ).value;
-
-    const m_month = document.querySelector(
-      'select[name="member_birthmonth"]'
-    ).value;
-
-    if (!h_day || !h_month || h_day == 0 || h_month == 0) {
-      //do noting
-      show_message("Aile reisi için geçerli bir tarih seçin", "bg-warning");
-      return;
-    }
-
-    if (
-      isset_member.value == "yes" &&
-      (!m_day || !m_month || m_day == 0 || m_month == 0)
-    ) {
-      //do noting
-      show_message("Aile ferdi için geçerli bir tarih seçin", "bg-warning");
-      return;
+    //Memebers
+    const members = JSON.parse(localStorage.getItem("member_info"));
+    if (members && members.length > 0) {
+      data["members"] = members;
     }
 
     await make_request(data, "get_price", "Fiyat güncelleniyor.")
       .then((res) => JSON.parse(res))
       .then((res) => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (res.type != "success") {
+          show_message(res.message, "bg-danger");
+          return;
+        }
+        //window.scrollTo({ top: 0, behavior: "smooth" });
         set_price_to_form(res.new_price);
       });
   }
@@ -429,30 +391,30 @@
     });
   }
 
-  function show_member_form() {
-    const isset_member = document.querySelector(".isset_member");
-    const ism = document.querySelector(".ism");
-    const family_member_form = document.querySelector(".family_member_form");
-    if (!family_member_form) return false;
-    if (isset_member?.checked) {
-      family_member_form.style.display = "block";
-      ism.value = "yes";
-    } else {
-      family_member_form.style.display = "none";
-      ism.value = "no";
-    }
+  // function show_member_form() {
+  //   const isset_member = document.querySelector(".isset_member");
+  //   const ism = document.querySelector(".ism");
+  //   const family_member_form = document.querySelector(".family_member_form");
+  //   if (!family_member_form) return false;
+  //   if (isset_member?.checked) {
+  //     family_member_form.style.display = "block";
+  //     ism.value = "yes";
+  //   } else {
+  //     family_member_form.style.display = "none";
+  //     ism.value = "no";
+  //   }
 
-    //on clicked
-    isset_member.addEventListener("click", () => {
-      if (isset_member.checked) {
-        family_member_form.style.display = "block";
-        ism.value = "yes";
-      } else {
-        family_member_form.style.display = "none";
-        ism.value = "no";
-      }
-    });
-  }
+  //   //on clicked
+  //   isset_member.addEventListener("click", () => {
+  //     if (isset_member.checked) {
+  //       family_member_form.style.display = "block";
+  //       ism.value = "yes";
+  //     } else {
+  //       family_member_form.style.display = "none";
+  //       ism.value = "no";
+  //     }
+  //   });
+  // }
 
   //Trigger!
   function _trigger(el) {
@@ -539,6 +501,7 @@
           );
 
           const label = currentTr.querySelector("td span");
+          console.log(label);
           label.textContent = "Onaylı";
           label.classList.remove("bg-warning");
           label.classList.remove("bg-danger");
@@ -570,7 +533,9 @@
             `tr[data-member-info-tr="${memberId}"]`
           );
           //Remove TR
-          e.target.parentNode.parentNode.parentNode.parentNode.parentNode.remove();
+          const tr =
+            e.target.parentNode.parentNode.parentNode.parentNode.parentNode;
+          tr.remove();
           return;
         }
 
@@ -626,10 +591,171 @@
     });
   }
 
+  //Add new memeber to the form
+  const btn_add_new_member = document.querySelector(".add-member");
+  btn_add_new_member.addEventListener("click", function (e) {
+    const getMemberInfo = localStorage.getItem("member_info");
+    let member_info = getMemberInfo ? JSON.parse(getMemberInfo) : [];
+    const member_name = document.querySelector('input[name="member_name"]');
+    const member_lastname = document.querySelector(
+      'input[name="member_lastname"]'
+    );
+    const member_birthday = document.querySelector(
+      'select[name="member_birthday"]'
+    );
+    const member_birthmonth = document.querySelector(
+      'select[name="member_birthmonth"]'
+    );
+    const member_birthyear = document.querySelector(
+      'select[name="member_birthyear"]'
+    );
+    const member_gender = document.querySelector(
+      'select[name="member_gender"]'
+    );
+    const member_intimacy = document.querySelector(
+      'select[name="member_intimacy"]'
+    );
+
+    if (!member_name.value || !member_lastname.value) {
+      show_message("Adı ve soyadı alanları doldurun", "bg-danger");
+      return;
+    }
+    if (
+      !member_birthday.value ||
+      !member_birthmonth.value ||
+      !member_birthyear.value ||
+      member_birthday.value == 0 ||
+      member_birthmonth.value == 0 ||
+      member_birthyear.value == 0
+    ) {
+      show_message("Aile ferdi için doğum tarihi girin", "bg-danger");
+      return;
+    }
+    //is it his/her child up to 25 years, don't added
+    if (
+      member_intimacy.value == "cocugu" &&
+      new Date().getFullYear() - member_birthyear.value > 25
+    ) {
+      show_message("En büyük 25 yaşında olan aile ferdi eklenebilir.");
+      return;
+    }
+
+    if (!member_gender.value || member_gender.value == 0) {
+      show_message("Geçerli bir cinsiyet seçin", "bg-danger");
+      return;
+    }
+    if (!member_intimacy.value || member_intimacy.value == 0) {
+      show_message("Yakınlık derecesini seçmediniz", "bg-danger");
+      return;
+    }
+
+    member_info.push({
+      member_name: member_name.value,
+      member_lastname: member_lastname.value,
+      member_birthday: member_birthday.value,
+      member_birthmonth: member_birthmonth.value,
+      member_birthyear: member_birthyear.value,
+      member_gender: member_gender.value,
+      member_intimacy: member_intimacy.value,
+    });
+
+    member_name.value = "";
+    member_lastname.value = "";
+    member_birthday.value = 0;
+    member_birthmonth.value = 0;
+    member_birthyear.value = 0;
+    member_gender.value = 0;
+    member_intimacy.value = 0;
+    _trigger(".close-modal");
+    //Save on local storage
+    localStorage.setItem("member_info", JSON.stringify(member_info));
+    update_total_price();
+    display_members();
+    document.querySelector('input[name="isset_member"]').value = "yes";
+  });
+
+  function display_members() {
+    const members = JSON.parse(localStorage.getItem("member_info"));
+    const memberListDiv = document.querySelectorAll(".member-list");
+    memberListDiv.forEach((memDiv) => {
+      const noDelete = memDiv.getAttribute("data-no-delete");
+
+      let member_output = "";
+      if (!members || members.length <= 0) {
+        memDiv.innerHTML = `<span style="
+      text-align: center;
+      padding: 10px;
+      color: #888;">Ekli aile ferdi yok.</span> `;
+        return;
+      }
+      document.querySelector('input[name="isset_member"]').value = "yes";
+      members?.forEach((member, index) => {
+        if (noDelete != "yes") {
+          member_output += `<div  class="list-group-item list-group-item-action " aria-current="true">
+        <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">${index + 1}. ${member.member_name}</h5>
+        <small style="cursor:pointer;" class="btn btn-danger remove-member" data-index="${index}">
+          Sil
+        </small>
+        </div>
+        <p class="mb-1">${member.member_birthday}/${member.member_birthmonth}/${
+            member.member_birthyear
+          }</p>
+        <div>
+            <small class="member_intimacy">${
+              intimacy_lookup[member.member_intimacy]
+            }</small> - 
+            <small class="member_gender">${
+              gender_lookup[member.member_gender]
+            }</small>
+        </div>
+      </div>`;
+        } else {
+          member_output += `<div  class="list-group-item list-group-item-action " aria-current="true">
+          <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">${index + 1}. ${member.member_name}</h5>
+          
+          </div>
+          <p class="mb-1">${member.member_birthday}/${
+            member.member_birthmonth
+          }/${member.member_birthyear}</p>
+          <div>
+              <small class="member_intimacy2">${
+                intimacy_lookup[member.member_intimacy]
+              }</small> - 
+              <small class="member_gender2">${
+                gender_lookup[member.member_gender]
+              }</small>
+          </div>
+        </div>`;
+        }
+      });
+
+      memDiv.innerHTML = member_output;
+    });
+  }
+
+  //remove member
+  document.addEventListener("click", function (e) {
+    const member_list = JSON.parse(localStorage.getItem("member_info"));
+    if (e.target.classList.contains("remove-member")) {
+      const member_index = e.target.getAttribute("data-index");
+      const new_member_list = member_list.filter((item, index) => {
+        if (index != member_index) {
+          return item;
+        }
+      });
+      localStorage.setItem("member_info", JSON.stringify(new_member_list));
+      display_members();
+      update_total_price();
+    }
+  });
+
   function init() {
     create_tab();
     fill_birthdate_selectbox();
-    show_member_form();
+    //show_member_form();
+    display_members();
   }
 
   init();

@@ -1,40 +1,33 @@
 <?php
 
 //get database class
-require FRAMEWORK."/database.php";
-
-
+require FRAMEWORK."database.php";
+require FRAMEWORK."MailSender.php";
 class Core
 {
     public $database;
     public $gender;
     public $gender_lookup;
     public $intimacy_lookup;
+    public $MailSender;
 
     public function __construct()
     {
         //create tables
-
         $this->database = new Database();
         $this->database->crate_houholder_table();
-        //$this->database->crate_family_member_table();
+        $this->database->crate_member_table();
+
+        //mail sender
+        $this->mail_sender = new MailSender();
 
         add_action('admin_menu', [$this, 'add_link2admin_menu']);
-
 
         $this->gender = ['woman','man'];
         $this->gender_lookup =['man'=> "Erkek", 'woman'=> "Kadın" ];
         $this->intimacy_lookup = [
-          'hanimi'=> "Hanımı",
-          'kizi'=> "Kızı",
-          'annesi'=> "Annesi",
-          'gelini'=> "Gelini",
-          'kardesi'=> "Kardeşi",
-          'torunu'=> "Torunu",
-          'kayin_validesi'=> "Kayın Validesi",
-          'baldizi'=> "Baldızı",
-          'yegeni'=> "Yeğeni",
-          'diger_akrabasi'=> "Diğerleri",
+            'esi'=>'Eşi',
+            'cocugu'=>'Çocuğu'
         ];
 
         $this->intimacy = [
@@ -48,12 +41,11 @@ class Core
         'baldizi',
         'yegeni',
         'diger_akrabasi'];
-        
-        //Create ajax actions
-        //$this->ajax_requests();
+            
+       
 
-        
     }
+
 
     public function add_link2admin_menu()
     {
@@ -102,7 +94,20 @@ class Core
             $update = $this->database->approve($_POST['data']['memberId']);   
             if($update)
             {
+                
+                //Get informations
+                $householder = $this->database->get_houserholder_byId($_POST['data']['memberId']);
+                
+                //Send approvement mail
+                $user_name = $householder->householder_name.' '.$householder->householder_lastname;
+                $mail_content = $this->mail_sender->get_approvement_template($user_name);
+                $to_mail = $householder->email;
+                $mail = $this->mail_sender->send(
+                    ['mail'=>$to_mail,'user_name'=>$user_name],
+                    $mail_content,'Cenaze Fonu için Kayıt Onay İşlemi');
+                
                 echo json_encode(['type'=>'success', 'message'=>'Onaylandı']);
+
                 wp_die();
             }
             else{
@@ -122,7 +127,14 @@ class Core
             $delete = $this->database->delete($_POST['data']['memberId']);   
             if($delete)
             {
+                //delete all members
+                $members = $this->database->get_members_by_houserholderId($_POST['data']['memberId']);
+                foreach($members as $member)
+                {
+                    $this->database->delete_family_members($member->Id);
+                }
                 echo json_encode(['type'=>'success', 'message'=>'Silindi']);
+
                 wp_die();
             }
             else{
@@ -172,13 +184,31 @@ class Core
         if($form_control['type']== 'success')
         {
             //Save it to the database
-            $insert = $this->database->add_new($_POST['data']);
+            $householderId = $this->database->add_new($_POST['data']['formData']);
+            
+            if(is_array($_POST['data']['memberData']) && count($_POST['data']['memberData']) > 0)
+            {
+                $members = $_POST['data']['memberData'];
+                foreach($members as $member)
+                {
+                    $insert_member = $this->database->add_new_member($member, $householderId);
+                }
+            }
+
             
             $error = [];
-            if($insert)
+            if($householderId)
             {
-                $error = ['type'=>'success','message'=>'Kaydınızı tamamlandı. Sizinle yakın zamanda iletişime geçeceğiz.'];
+               
+                //send email
+                $user_name = $_POST['data']['formData']['householder_name'].' '.$_POST['data']['formData']['householder_lastname'];
+                $mail_content = $this->mail_sender->get_registration_template($user_name);
+                $to_mail = $_POST['data']['formData']['email'];
+                $mail = $this->mail_sender->send(
+                    ['mail'=>$to_mail,'user_name'=>$user_name],
+                    $mail_content,'Cenaze Fonu için Kayıt İşlemi');
                 
+                $error = ['type'=>'success','message'=>'Kaydınızı tamamlandı. Sizinle yakın zamanda iletişime geçeceğiz.'];
             }
             else{
                 $error = ['type'=>'danger','message'=>'Bir hata oluştu. Kayıt yapılmadı.'];
@@ -193,15 +223,28 @@ class Core
     public function get_price()
     {   
         $data = $_POST['data'];
+        $members = $data['members']; 
         $total_price = $this->cacl_price($data['householder_birthyear']);
-        
-        //if there is a member
-        if( $data['member_birthyear'] != 0)
+
+        if($data['householder_birthyear'] == '' || $data['householder_birthyear'] == 0)
         {
-            $total_price = $total_price + $this->cacl_price($data['member_birthyear']);
+            echo json_encode(['type'=>'danger','message'=>'Aile reisi bilgilerini doldurun']);
+            wp_die( );
         }
-    
-        echo json_encode( ['new_price'=>$total_price] );
+
+        //if there is a members
+        else if( is_array($members) && count($members) > 0)
+        {
+            foreach($members as $member)
+            {
+                $total_price = $total_price + $this->cacl_price($member['member_birthyear']);  
+            }
+        }
+
+        //Yıllık aidat 65;
+        $total_price  = $total_price+65;
+
+        echo json_encode( ['type'=>'success','new_price'=>$total_price] );
         wp_die();
     }
 
@@ -209,10 +252,10 @@ class Core
      * Make some validation control form control
      */
     public function form_control_handler($return_array) {
-        $data = $_POST['data'];
+        $data = $_POST['data']['formData'];
+        $memberData = $_POST['data']['memberData'];
         $error = [];
        
-
         //is empty?
         if(trim($data['householder_name']) =='' ||
             trim($data['householder_lastname']) == '' ||
@@ -231,17 +274,17 @@ class Core
         }
 
         //if there is a family member
-        else if($data['isset_member'] == 'yes' && 
-        (trim($data['member_name']) == '' ||
-        trim($data['member_lastname']) == '' ||
-        trim($data['member_birthday']) == '' ||
-        trim($data['member_birthmonth']) == '' ||
-        trim($data['member_birthyear']) == '' ||
-        trim($data['member_gender']) == '' ||
-        trim($data['member_intimacy']) == '')
-        ){
-            $error = ['type'=>'danger','message'=>'Aile ferdi için gerekli alanları doldurun'];
-        }
+        // else if($data['isset_member'] == 'yes' && 
+        // (trim($data['member_name']) == '' ||
+        // trim($data['member_lastname']) == '' ||
+        // trim($data['member_birthday']) == '' ||
+        // trim($data['member_birthmonth']) == '' ||
+        // trim($data['member_birthyear']) == '' ||
+        // trim($data['member_gender']) == '' ||
+        // trim($data['member_intimacy']) == '')
+        // ){
+        //     $error = ['type'=>'danger','message'=>'Aile ferdi için gerekli alanları doldurun'];
+        // }
 
         else if(!is_email($data['email']))
         {
@@ -263,23 +306,28 @@ class Core
          else if( ! in_array( $data['householder_gender'], $this->gender ) ){
             $error = ['type'=>'danger','message'=>'Cinsiyet geçerli değil'];
         }
-         else if( $data['isset_member'] == 'yes' && (! in_array( $data['member_gender'], $this->gender ) )){
-            $error = ['type'=>'danger','message'=>'Cinsiyet geçerli değil'];
-        }
         else if(!is_numeric($data['post_code'])){
             $error = ['type'=>'danger','message'=>'Geçerli posta kodu girin'];
+        }
+
+        else if( $data['isset_member'] == 'yes' && (! in_array( $data['member_gender'], $this->gender ) )){
+            $error = ['type'=>'danger','message'=>'Cinsiyet geçerli değil'];
         }
         else if( $data['isset_member'] == 'yes' &&  (!in_array($data['member_intimacy'], $this->intimacy))){
             $error = ['type'=>'danger','message'=>'Yakınlık derecesi geçerli değil.'];
         }
         else{
 
-            //calculate prece
+            //calculate price
             $total_price = $this->cacl_price($data['householder_birthyear']);
-            if($data['isset_member'] == 'yes')
+            if(is_array($memberData) && count($memberData) > 0)
             {
-                $total_price = $total_price + $this->cacl_price($data['member_birthyear']);
+                foreach($memberData as $member)
+                $total_price = $total_price + $this->cacl_price($member['member_birthyear']);
             }
+            
+            //yıllık aiddat 65 €
+            $total_price = $total_price + 65;
 
             //ages
             $ages = [
@@ -465,6 +513,7 @@ class Core
     
             <thead class="table-light">
                 <tr style="font-weight: bold">
+                    <td>#</td>
                     <td>Adı Soyadı</td>
                     <td>Yaş</td>
                     <td>Cinsiyet</td>
@@ -476,11 +525,15 @@ class Core
                 </tr>           
             </thead>
                 <?php if(count($all_records) > 0):?>
-                <?php foreach($all_records as $member):?>
+                <?php foreach($all_records as $member):
+                    $family_members = $this->database->get_members_by_houserholderId($member->Id);
+                    //print_r($family_members);
+                    ?>
                 
                 <tr class="mem-info" data-member-id="<?php echo $member->Id?>">
                     
                     
+                    <td class="member-td"><?php echo $member->Id; ?> </td>
                     <td class="member-td"><?php echo $member->householder_name;?> <?php echo $member->householder_lastname; ?> </td>
                     <td class="member-td"><?php echo $member->member_age?></td>
                     <td class="member-td"><?php echo $this->gender_lookup[$member->householder_gender];?></td>
@@ -537,7 +590,7 @@ class Core
                         </ul>
                         </div>
                     </td>
-                <?php $this->member_popup_information($member); ?>
+                <?php $this->member_popup_information($member, $family_members); ?>
                 </tr>
             <?php endforeach; ?>
             <?php else: ?>
@@ -573,7 +626,7 @@ class Core
     <?php
     }
 
-    public function member_popup_information($member){
+    public function member_popup_information($member, $family_members){
     ?>
     <tr style="display: none" class="member-info-tr" data-member-info-id="<?php echo $member->Id?>">
                     <td colspan="7" style="position: relative">
@@ -589,9 +642,11 @@ class Core
                         <svg  style="margin-bottom: 5px" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
                             <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z"/>
                         </svg>
-                        <span style="color: #666">Toplam Giriş Üçreti</span>
+                        <span style="color: #333">Toplam Giriş Ücreti</span>
+                        
                         <div class="display-6"><span class="form_price"><?php echo $member->form_price?></span> <small style="font-size: 25px;">€</small></div>
                         <input type="hidden" name="form_price" />
+                        <small style="color: #888">+ yıllık aidat 65 €</small>
                     </div>
                     </div>
                         </div>
@@ -627,16 +682,32 @@ class Core
                         </i>
                 Aile Ferdi</div>
 
-                    <?php if($member->member_name !=''):?>
-                    <div class="last-info-item">
-                        <span>Adı / Soyadı</span>
-                        <p><span class="member_name"><?php echo $member->member_name?> <?php echo $member->member_lastname?></span> (<span class="member_gender"><?php echo $this->gender_lookup[$member->member_gender]?></span> - <span class="member_intimacy"><?php echo $this->intimacy_lookup[strtolower($member->member_intimacy)]?></span>)  * <span class="badge bg-success text-white"><span style="color: white" class="member_age"><?php echo $member->member_age?></span> yaşında</span></p>
-                    </div>
+                    <?php if(count($family_members) > 0):?>
+                        <div class="list-group member-list" style="margin: 10px">
+                        <?php foreach($family_members as $f_member):?>
+                            
+                        <div  class="list-group-item list-group-item-action " aria-current="true">
+                        <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1"><?php echo $f_member->member_name?> <?php echo $f_member->member_lastname?></h5>
+                        
+                        </div>
+                        <p class="mb-1">
+                            <?php echo str_replace('-','/',$f_member->member_birthdate);?>
+                            <span class="member_intimacy2">
+                                <?php echo $this->intimacy_lookup[$f_member->member_intimacy];?>
+                            </span> - 
+                            <span class="member_gender2">
+                                <?php echo $this->gender_lookup[$f_member->member_gender];?>
+                            </span>
+                        </p>
+                        <div>
+                           
+                        </div>
+                        </div>
+                        <?php endforeach; ?>
                     
-                    <div class="last-info-item">
-                        <span>Doğum Tarihi</span>
-                        <p><span class="member_birthday"><?php echo str_replace('-','/',$member->member_birthdate)?></span></p>
                     </div>
+
                     <?php else:?>
 
                         <div class="last-info-item">

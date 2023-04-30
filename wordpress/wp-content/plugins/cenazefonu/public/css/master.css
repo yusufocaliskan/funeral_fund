@@ -1,11 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap");
 #cenaze-fonu {
   background-color: #888;
 }
 
 .registration_form {
-  font-family: Roboto;
+  font-family: Poppins;
   width: 100%;
   max-width: 1200px;
   border: 1px solid #ddd;
@@ -19,7 +18,7 @@
 .registration_header {
   color: #fff;
   padding: 20px;
-  background-color: #0d6efd;
+  background-color: #06aedb;
   margin-bottom: 40px;
 }
 .registration_header h1 {
@@ -65,7 +64,7 @@
 }
 .tab span {
   color: #444;
-  font-size: 16px;
+  font-size: 15px;
 }
 .tab.done i {
   background: rgba(48, 198, 70, 0.871);
@@ -85,13 +84,17 @@
 }
 
 .tab.active i {
-  background: #0d6efd;
-  border: 2px solid #2f4cc3;
+  background: #deb460;
+  border: 2px solid #af8839;
+
   color: #fff;
   border-radius: 100%;
 }
+.form_price {
+  color: #333 !important;
+}
 .tab.active span {
-  color: #0d6efd;
+  color: #deb460;
   font-weight: bold;
 }
 .tab-number {
@@ -100,7 +103,7 @@
 .tab-proccess {
   width: 50%;
   height: 4px;
-  background: #0d6efd;
+  background: #deb460;
   position: absolute;
   left: -37px;
   top: 24px;
@@ -120,7 +123,7 @@
   display: flex;
 }
 .total_price svg {
-  color: #0d6efd;
+  color: #deb460;
   width: 30px;
 }
 
@@ -151,7 +154,7 @@
 }
 
 .information-item svg {
-  color: #0d6efd;
+  color: #deb460;
 }
 .information-body table {
   background-color: #eee;
@@ -162,7 +165,7 @@
   color: #555;
 }
 .information-body thead {
-  background-color: #0d6efd;
+  background-color: #deb460;
   color: #fff;
 }
 
@@ -180,10 +183,6 @@
   text-align: center;
 }
 
-.family_member_form {
-  display: none;
-}
-
 .tab-content-title {
   padding: 20px;
   font-size: 20px;
@@ -191,7 +190,7 @@
 }
 .tab-content-title svg {
   width: 30px;
-  fill: #0d6efd;
+  fill: #deb460;
   margin-right: 10px;
 }
 .tab-content label {
@@ -279,4 +278,12 @@
 }
 .member-list-table .mem-info:hover {
   background-color: #98b7f5;
+}
+
+.add-new-family-member span {
+  color: #deb460;
+  cursor: pointer;
+}
+.add-new-family-member span:hover {
+  text-decoration: underline;
 }
